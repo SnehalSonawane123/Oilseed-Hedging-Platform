@@ -910,6 +910,361 @@ else:
         st.subheader("🔍 Recent Transactions")
         filter_tx_type = st.multiselect("Filter by Type", ['All'] + list(set([b['transaction_type'] for b in st.session_state.blockchain])), default=['All'])
         show_blocks = st.slider("Number of blocks to display", 5, 50, 10)
-        filtered_blocks = st.session_state.blockchain
+filtered_blocks = st.session_state.blockchain
         if 'All' not in filter_tx_type:
-            filtered_blocks = [b for b in filtered_blocks if b['transaction_type'] in filter_
+            filtered_blocks = [b for b in filtered_blocks if b['transaction_type'] in filter_tx_type]
+        recent_blocks = list(reversed(filtered_blocks[-show_blocks:]))
+        for block in recent_blocks:
+            tx_type_emoji = {
+                'USER_REGISTRATION': '👤',
+                'FUTURES_POSITION': '💹',
+                'FORWARD_CONTRACT': '📋',
+                'CONTRACT_ACCEPTED': '✅',
+                'CONTRACT_COMPLETED': '🎯',
+                'CONTRACT_CANCELLED': '❌',
+                'POSITION_CLOSED': '🔒'
+            }
+            emoji = tx_type_emoji.get(block['transaction_type'], '🔷')
+            with st.expander(f"{emoji} Block #{block['index']} - {block['transaction_type']} - {block['timestamp'][:19]}"):
+                block_col1, block_col2 = st.columns(2)
+                with block_col1:
+                    st.markdown(f"**Block Index:** {block['index']}")
+                    st.markdown(f"**Transaction Type:** {block['transaction_type']}")
+                    st.markdown(f"**Timestamp:** {block['timestamp']}")
+                with block_col2:
+                    st.markdown(f"**Block Hash:** `{block['hash'][:32]}...`")
+                    st.markdown(f"**Previous Hash:** `{block['previous_hash'][:32]}...`")
+                st.markdown("**Transaction Data:**")
+                st.json(block['data'])
+                if st.button(f"🔍 Verify Block #{block['index']}", key=f"verify_{block['index']}"):
+                    block_copy = {k: v for k, v in block.items() if k != 'hash'}
+                    computed_hash = hash_block(block_copy)
+                    if computed_hash == block['hash']:
+                        st.success("✅ Block verification successful - Hash matches!")
+                    else:
+                        st.error("❌ Block verification failed - Hash mismatch!")
+        st.divider()
+        st.subheader("🔐 Blockchain Verification")
+        verify_col1, verify_col2 = st.columns(2)
+        with verify_col1:
+            if st.button("🔍 Verify Entire Blockchain", use_container_width=True):
+                with st.spinner("Verifying blockchain integrity..."):
+                    is_valid = verify_blockchain()
+                    if is_valid:
+                        st.success("✅ Blockchain integrity verified! All blocks are valid.")
+                    else:
+                        st.error("❌ Blockchain integrity compromised! Tampering detected.")
+        with verify_col2:
+            if st.button("📊 Blockchain Statistics", use_container_width=True):
+                st.info(f"Total Blocks: {len(st.session_state.blockchain)}")
+                st.info(f"Chain Length: {len(st.session_state.blockchain)}")
+                if st.session_state.blockchain:
+                    st.info(f"Latest Block Hash: {st.session_state.blockchain[-1]['hash'][:32]}...")
+    elif menu == "📚 Learning Hub":
+        st.header("📚 Educational Learning Hub")
+        st.write("Master hedging strategies, risk management, and commodity trading through interactive modules.")
+        tab1, tab2, tab3 = st.tabs(["📖 Course Modules", "🎓 Certifications", "📺 Video Library"])
+        with tab1:
+            st.subheader("📖 Available Learning Modules")
+            progress_modules = [m for m in st.session_state.educational_modules if m.get('completed', False)]
+            completion_rate = (len(progress_modules) / len(st.session_state.educational_modules) * 100) if st.session_state.educational_modules else 0
+            prog_col1, prog_col2, prog_col3 = st.columns(3)
+            prog_col1.metric("Total Modules", len(st.session_state.educational_modules))
+            prog_col2.metric("Completed", len(progress_modules))
+            prog_col3.metric("Completion Rate", f"{completion_rate:.1f}%")
+            st.progress(completion_rate / 100)
+            level_filter = st.multiselect("Filter by Level", ['All', 'Beginner', 'Intermediate', 'Advanced'], default=['All'])
+            for idx, module in enumerate(st.session_state.educational_modules):
+                if 'All' not in level_filter and module['level'] not in level_filter:
+                    continue
+                status_icon = "✅" if module.get('completed', False) else "📘"
+                level_colors = {'Beginner': '🟢', 'Intermediate': '🟡', 'Advanced': '🔴'}
+                level_icon = level_colors.get(module['level'], '⚪')
+                with st.expander(f"{status_icon} {module['title']} {level_icon} {module['level']} - {module['duration']}"):
+                    st.markdown(f"**Description:** {module['description']}")
+                    st.markdown(f"**Duration:** {module['duration']}")
+                    st.markdown(f"**Level:** {module['level']}")
+                    st.markdown(f"**Status:** {'Completed ✅' if module.get('completed', False) else 'Not Started 📝'}")
+                    module_col1, module_col2 = st.columns(2)
+                    with module_col1:
+                        if not module.get('completed', False):
+                            if st.button(f"▶️ Start Learning", key=f"start_{idx}", use_container_width=True):
+                                module['completed'] = True
+                                st.session_state.notifications.append(f"Completed module: {module['title']}")
+                                st.success(f"🎉 Congratulations! You've completed '{module['title']}'")
+                                st.balloons()
+                                st.rerun()
+                    with module_col2:
+                        if st.button(f"📥 Download Materials", key=f"download_{idx}", use_container_width=True):
+                            st.info("Study materials downloaded!")
+        with tab2:
+            st.subheader("🎓 Professional Certifications")
+            st.markdown("""
+            ### Available Certifications:
+            **1. Certified Commodity Hedger (CCH)**
+            - Complete all beginner modules
+            - Pass assessment with 80%+ score
+            - Duration: 2-3 weeks
+            - Fee: ₹5,000
+            **2. Advanced Risk Management Professional (ARMP)**
+            - Complete all intermediate & advanced modules
+            - Complete 10+ successful hedging transactions
+            - Pass comprehensive exam
+            - Duration: 4-6 weeks
+            - Fee: ₹15,000
+            **3. NCDEX Trading Specialist**
+            - Platform-specific certification
+            - Live trading experience required
+            - Duration: 3 weeks
+            - Fee: ₹8,000
+            """)
+            if completion_rate == 100:
+                st.success("🎉 Eligible for certification! Contact support to schedule your exam.")
+                if st.button("📧 Request Certification Exam"):
+                    st.balloons()
+                    st.success("Certification request submitted! You'll receive exam details via email.")
+            else:
+                st.info(f"Complete all modules ({completion_rate:.0f}% done) to unlock certification eligibility.")
+        with tab3:
+            st.subheader("📺 Video Tutorial Library")
+            videos = [
+                {"title": "Introduction to Commodity Hedging", "duration": "15:30", "views": "2.3K", "category": "Beginner"},
+                {"title": "Understanding Futures vs Forwards", "duration": "22:45", "views": "1.8K", "category": "Intermediate"},
+                {"title": "NCDEX Platform Tutorial", "duration": "18:20", "views": "3.1K", "category": "Beginner"},
+                {"title": "Advanced Options Strategies", "duration": "35:15", "views": "890", "category": "Advanced"},
+                {"title": "Risk Management Best Practices", "duration": "28:40", "views": "1.5K", "category": "Intermediate"},
+                {"title": "Reading Market Indicators", "duration": "25:10", "views": "2.0K", "category": "Intermediate"}
+            ]
+            video_category = st.selectbox("Filter by Category", ['All', 'Beginner', 'Intermediate', 'Advanced'])
+            cols = st.columns(3)
+            for idx, video in enumerate(videos):
+                if video_category != 'All' and video['category'] != video_category:
+                    continue
+                with cols[idx % 3]:
+                    st.markdown(f"### 🎬 {video['title']}")
+                    st.markdown(f"⏱️ {video['duration']} | 👁️ {video['views']} | 🎯 {video['category']}")
+                    if st.button(f"▶️ Watch", key=f"video_{idx}", use_container_width=True):
+                        st.info(f"Playing: {video['title']}")
+    elif menu == "📊 Analytics":
+        st.header("📊 Advanced Analytics & Insights")
+        tab1, tab2, tab3 = st.tabs(["📈 Market Analysis", "🔥 Heat Maps", "📉 Volatility Analysis"])
+        with tab1:
+            st.subheader("📈 Comprehensive Market Analysis")
+            analysis_commodity = st.selectbox("Select Commodity for Analysis", list(st.session_state.market_data.keys()), key="analysis_commodity")
+            commodity_data = st.session_state.price_data[st.session_state.price_data['commodity'] == analysis_commodity]
+            metric_col1, metric_col2, metric_col3, metric_col4, metric_col5 = st.columns(5)
+            current_price = commodity_data['price'].iloc[-1]
+            avg_price = commodity_data['price'].mean()
+            min_price = commodity_data['price'].min()
+            max_price = commodity_data['price'].max()
+            price_volatility = commodity_data['price'].std()
+            metric_col1.metric("Current", f"₹{current_price:.2f}")
+            metric_col2.metric("Average", f"₹{avg_price:.2f}")
+            metric_col3.metric("Min (6M)", f"₹{min_price:.2f}")
+            metric_col4.metric("Max (6M)", f"₹{max_price:.2f}")
+            metric_col5.metric("Volatility (σ)", f"₹{price_volatility:.2f}")
+            fig_candlestick = go.Figure()
+            commodity_data_resampled = commodity_data.set_index('date').resample('W').agg({
+                'price': ['first', 'max', 'min', 'last'],
+                'volume': 'sum'
+            })
+            commodity_data_resampled.columns = ['open', 'high', 'low', 'close', 'volume']
+            commodity_data_resampled = commodity_data_resampled.reset_index()
+            fig_candlestick.add_trace(go.Candlestick(
+                x=commodity_data_resampled['date'],
+                open=commodity_data_resampled['open'],
+                high=commodity_data_resampled['high'],
+                low=commodity_data_resampled['low'],
+                close=commodity_data_resampled['close'],
+                name=analysis_commodity
+            ))
+            fig_candlestick.update_layout(
+                title=f"{analysis_commodity} - Weekly Candlestick Chart",
+                xaxis_title="Date",
+                yaxis_title="Price (₹/quintal)",
+                height=500,
+                xaxis_rangeslider_visible=False
+            )
+            st.plotly_chart(fig_candlestick, use_container_width=True)
+            st.subheader("📊 Volume Analysis")
+            fig_volume = go.Figure()
+            fig_volume.add_trace(go.Bar(
+                x=commodity_data['date'],
+                y=commodity_data['volume'],
+                name='Volume',
+                marker_color='lightblue'
+            ))
+            fig_volume.update_layout(
+                title="Trading Volume Over Time",
+                xaxis_title="Date",
+                yaxis_title="Volume (quintals)",
+                height=300
+            )
+            st.plotly_chart(fig_volume, use_container_width=True)
+            st.subheader("📉 Technical Indicators")
+            commodity_data_copy = commodity_data.copy()
+            commodity_data_copy['SMA_20'] = commodity_data_copy['price'].rolling(20).mean()
+            commodity_data_copy['SMA_50'] = commodity_data_copy['price'].rolling(50).mean()
+            commodity_data_copy['EMA_12'] = commodity_data_copy['price'].ewm(span=12, adjust=False).mean()
+            commodity_data_copy['EMA_26'] = commodity_data_copy['price'].ewm(span=26, adjust=False).mean()
+            fig_technical = go.Figure()
+            fig_technical.add_trace(go.Scatter(x=commodity_data_copy['date'], y=commodity_data_copy['price'], mode='lines', name='Price', line=dict(color='blue')))
+            fig_technical.add_trace(go.Scatter(x=commodity_data_copy['date'], y=commodity_data_copy['SMA_20'], mode='lines', name='SMA 20', line=dict(color='orange', dash='dash')))
+            fig_technical.add_trace(go.Scatter(x=commodity_data_copy['date'], y=commodity_data_copy['SMA_50'], mode='lines', name='SMA 50', line=dict(color='red', dash='dash')))
+            fig_technical.update_layout(
+                title="Price with Moving Averages",
+                xaxis_title="Date",
+                yaxis_title="Price (₹/quintal)",
+                height=400
+            )
+            st.plotly_chart(fig_technical, use_container_width=True)
+        with tab2:
+            st.subheader("🔥 Market Heat Map")
+            heatmap_data = []
+            for commodity, data in st.session_state.market_data.items():
+                heatmap_data.append({
+                    'Commodity': commodity,
+                    'Price': data['price'],
+                    'Change %': data['change'],
+                    'Volume': data['volume'],
+                    'Volatility': data['volatility']
+                })
+            heatmap_df = pd.DataFrame(heatmap_data)
+            fig_heatmap = px.imshow(
+                heatmap_df.set_index('Commodity')[['Change %', 'Volatility']].T,
+                labels=dict(x="Commodity", y="Metric", color="Value"),
+                x=heatmap_df['Commodity'],
+                y=['Change %', 'Volatility'],
+                color_continuous_scale='RdYlGn',
+                aspect="auto"
+            )
+            fig_heatmap.update_layout(title="Market Performance Heat Map", height=400)
+            st.plotly_chart(fig_heatmap, use_container_width=True)
+            st.subheader("📊 Correlation Matrix")
+            correlation_data = {}
+            for commodity in st.session_state.market_data.keys():
+                commodity_prices = st.session_state.price_data[st.session_state.price_data['commodity'] == commodity]['price'].values
+                if len(commodity_prices) > 0:
+                    correlation_data[commodity] = commodity_prices[:min(len(commodity_prices), 180)]
+            max_len = max(len(v) for v in correlation_data.values())
+            for k in correlation_data.keys():
+                if len(correlation_data[k]) < max_len:
+                    correlation_data[k] = np.pad(correlation_data[k], (0, max_len - len(correlation_data[k])), mode='edge')
+            corr_df = pd.DataFrame(correlation_data)
+            correlation_matrix = corr_df.corr()
+            fig_corr = px.imshow(
+                correlation_matrix,
+                labels=dict(color="Correlation"),
+                x=correlation_matrix.columns,
+                y=correlation_matrix.columns,
+                color_continuous_scale='RdBu',
+                aspect="auto",
+                zmin=-1,
+                zmax=1
+            )
+            fig_corr.update_layout(title="Commodity Price Correlation Matrix", height=500)
+            st.plotly_chart(fig_corr, use_container_width=True)
+        with tab3:
+            st.subheader("📉 Volatility Analysis")
+            vol_commodity = st.selectbox("Select Commodity", list(st.session_state.market_data.keys()), key="vol_commodity")
+            vol_window = st.slider("Rolling Window (days)", 7, 60, 30)
+            vol_data = st.session_state.price_data[st.session_state.price_data['commodity'] == vol_commodity].copy()
+            vol_data['returns'] = vol_data['price'].pct_change()
+            vol_data['volatility'] = vol_data['returns'].rolling(vol_window).std() * np.sqrt(252) * 100
+            fig_vol = go.Figure()
+            fig_vol.add_trace(go.Scatter(
+                x=vol_data['date'],
+                y=vol_data['volatility'],
+                mode='lines',
+                name='Volatility',
+                fill='tonexty',
+                line=dict(color='red')
+            ))
+            fig_vol.update_layout(
+                title=f"{vol_commodity} - Rolling Volatility ({vol_window} days)",
+                xaxis_title="Date",
+                yaxis_title="Annualized Volatility (%)",
+                height=400
+            )
+            st.plotly_chart(fig_vol, use_container_width=True)
+            current_vol = vol_data['volatility'].iloc[-1]
+            avg_vol = vol_data['volatility'].mean()
+            max_vol = vol_data['volatility'].max()
+            min_vol = vol_data['volatility'].min()
+            vol_metric_col1, vol_metric_col2, vol_metric_col3, vol_metric_col4 = st.columns(4)
+            vol_metric_col1.metric("Current Volatility", f"{current_vol:.2f}%")
+            vol_metric_col2.metric("Average Volatility", f"{avg_vol:.2f}%")
+            vol_metric_col3.metric("Max Volatility", f"{max_vol:.2f}%")
+            vol_metric_col4.metric("Min Volatility", f"{min_vol:.2f}%")
+            if current_vol > avg_vol * 1.5:
+                st.error("⚠️ **High Volatility Alert!** Current volatility is significantly above average. Exercise caution in trading.")
+            elif current_vol < avg_vol * 0.5:
+                st.success("✅ **Low Volatility Period** - Stable market conditions. Good for conservative strategies.")
+            else:
+                st.info("📊 **Normal Volatility Range** - Market operating within typical volatility levels.")
+    elif menu == "⚙️ Settings":
+        st.header("⚙️ Account Settings & Preferences")
+        tab1, tab2, tab3, tab4 = st.tabs(["👤 Profile", "🔔 Notifications", "🎨 Preferences", "🔐 Security"])
+        with tab1:
+            st.subheader("👤 Profile Information")
+            user_info = st.session_state.users[st.session_state.username]
+            profile_col1, profile_col2 = st.columns(2)
+            with profile_col1:
+                st.text_input("Username", value=st.session_state.username, disabled=True)
+                new_location = st.text_input("Location", value=user_info.get('location', ''))
+                new_phone = st.text_input("Phone Number", value=user_info.get('phone', ''))
+            with profile_col2:
+                st.text_input("Account Type", value=user_info.get('type', ''), disabled=True)
+                kyc_status = st.selectbox("KYC Status", ["Not Submitted", "Pending", "Verified"], index=2)
+                st.text_input("Member Since", value=user_info.get('created_at', '')[:10] if 'created_at' in user_info else 'N/A', disabled=True)
+            if st.button("💾 Update Profile", use_container_width=True):
+                user_info['location'] = new_location
+                user_info['phone'] = new_phone
+                st.success("✅ Profile updated successfully!")
+                st.rerun()
+        with tab2:
+            st.subheader("🔔 Notification Preferences")
+            enable_price_alerts = st.checkbox("Enable Price Movement Alerts", value=True)
+            price_threshold = st.slider("Alert Threshold (%)", 1.0, 10.0, 3.0, 0.5)
+            enable_contract_alerts = st.checkbox("Contract Status Notifications", value=True)
+            enable_position_alerts = st.checkbox("Position P&L Alerts", value=True)
+            enable_email = st.checkbox("Email Notifications", value=False)
+            enable_sms = st.checkbox("SMS Notifications", value=False)
+            if st.button("💾 Save Notification Settings", use_container_width=True):
+                st.success("✅ Notification preferences saved!")
+        with tab3:
+            st.subheader("🎨 Display Preferences")
+            theme = st.selectbox("Theme", ["Light", "Dark", "Auto"])
+            language = st.selectbox("Language", ["English", "हिंदी", "मराठी", "ગુજરાતી"])
+            currency = st.selectbox("Currency Display", ["INR (₹)", "USD ($)"])
+            date_format = st.selectbox("Date Format", ["DD/MM/YYYY", "MM/DD/YYYY", "YYYY-MM-DD"])
+            chart_type = st.selectbox("Default Chart Type", ["Line", "Candlestick", "Area"])
+            if st.button("💾 Save Preferences", use_container_width=True):
+                st.success("✅ Display preferences saved!")
+        with tab4:
+            st.subheader("🔐 Security Settings")
+            st.markdown("#### Change Password")
+            current_password = st.text_input("Current Password", type="password", key="current_pass")
+            new_password = st.text_input("New Password", type="password", key="new_pass")
+            confirm_new_password = st.text_input("Confirm New Password", type="password", key="confirm_new_pass")
+            if st.button("🔑 Change Password", use_container_width=True):
+                if new_password == confirm_new_password and len(new_password) >= 6:
+                    hashed_pass = hashlib.sha256(new_password.encode()).hexdigest()
+                    user_info['password'] = hashed_pass
+                    st.success("✅ Password changed successfully!")
+                else:
+                    st.error("❌ Passwords don't match or too short!")
+            st.divider()
+            st.markdown("#### Two-Factor Authentication")
+            enable_2fa = st.checkbox("Enable 2FA", value=False)
+            if enable_2fa:
+                st.info("📱 Scan QR code with authenticator app")
+                st.text_input("Enter 2FA Code")
+            st.divider()
+            st.markdown("#### Active Sessions")
+            st.markdown("**Current Session:** Desktop - Sangamner, Maharashtra")
+            st.markdown("**Last Login:** " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            if st.button("🚪 Logout All Devices", use_container_width=True):
+                st.warning("All sessions will be terminated")
+st.markdown("---")
+st.caption("© 2024 GrainShield Pro | Powered by AI & Blockchain | Contact: support@grainshield.in | Version 1.0.0")
