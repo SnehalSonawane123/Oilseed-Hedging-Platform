@@ -910,7 +910,7 @@ else:
         st.subheader("🔍 Recent Transactions")
         filter_tx_type = st.multiselect("Filter by Type", ['All'] + list(set([b['transaction_type'] for b in st.session_state.blockchain])), default=['All'])
         show_blocks = st.slider("Number of blocks to display", 5, 50, 10)
-filtered_blocks = st.session_state.blockchain
+        filtered_blocks = st.session_state.blockchain
         if 'All' not in filter_tx_type:
             filtered_blocks = [b for b in filtered_blocks if b['transaction_type'] in filter_tx_type]
         recent_blocks = list(reversed(filtered_blocks[-show_blocks:]))
