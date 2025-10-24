@@ -1,4 +1,5 @@
-# GrainShieldPro : Blockchain-enabled hedging platform with AI price forecasting for oilseed farmers to manage price volatility and risk.
+# GrainShieldPro 
+Blockchain-enabled hedging platform with AI price forecasting for oilseed farmers to manage price volatility and risk.
 
 ## How to Run
 1. Install dependencies: `pip install -r requirements.txt`
