@@ -267,7 +267,6 @@ if not st.session_state.logged_in:
                     }
                     add_to_blockchain('USER_REGISTRATION', {'username': new_username, 'type': user_type, 'location': location})
                     st.success("✅ Registration successful! Please login.")
-                    st.balloons()
 else:
     with st.sidebar:
         st.image("https://cdn-icons-png.flaticon.com/512/2917/2917995.png", width=80)
@@ -962,16 +961,16 @@ else:
                     st.info(f"Latest Block Hash: {st.session_state.blockchain[-1]['hash'][:32]}...")
     elif menu == "📚 Learning Hub":
         st.header("📚 Educational Learning Hub")
-        st.write("Master hedging strategies, risk management, and commodity trading through interactive modules.")
-        tab1, tab2, tab3 = st.tabs(["📖 Course Modules", "🎓 Certifications", "📺 Video Library"])
+        st.write("Master hedging strategies, risk management, and commodity trading through interactive content.")
+        tab1, tab2, tab3, tab4 = st.tabs(["📖 Course Modules", "📺 Video Library", "📝 Quizzes", "📄 Articles"])
         with tab1:
-            st.subheader("📖 Available Learning Modules")
+            st.subheader("📖 Interactive Learning Modules")
             progress_modules = [m for m in st.session_state.educational_modules if m.get('completed', False)]
             completion_rate = (len(progress_modules) / len(st.session_state.educational_modules) * 100) if st.session_state.educational_modules else 0
             prog_col1, prog_col2, prog_col3 = st.columns(3)
             prog_col1.metric("Total Modules", len(st.session_state.educational_modules))
             prog_col2.metric("Completed", len(progress_modules))
-            prog_col3.metric("Completion Rate", f"{completion_rate:.1f}%")
+            prog_col3.metric("Progress", f"{completion_rate:.0f}%")
             st.progress(completion_rate / 100)
             level_filter = st.multiselect("Filter by Level", ['All', 'Beginner', 'Intermediate', 'Advanced'], default=['All'])
             for idx, module in enumerate(st.session_state.educational_modules):
@@ -981,70 +980,400 @@ else:
                 level_colors = {'Beginner': '🟢', 'Intermediate': '🟡', 'Advanced': '🔴'}
                 level_icon = level_colors.get(module['level'], '⚪')
                 with st.expander(f"{status_icon} {module['title']} {level_icon} {module['level']} - {module['duration']}"):
-                    st.markdown(f"**Description:** {module['description']}")
-                    st.markdown(f"**Duration:** {module['duration']}")
-                    st.markdown(f"**Level:** {module['level']}")
-                    st.markdown(f"**Status:** {'Completed ✅' if module.get('completed', False) else 'Not Started 📝'}")
-                    module_col1, module_col2 = st.columns(2)
-                    with module_col1:
-                        if not module.get('completed', False):
-                            if st.button(f"▶️ Start Learning", key=f"start_{idx}", use_container_width=True):
-                                module['completed'] = True
-                                st.session_state.notifications.append(f"Completed module: {module['title']}")
-                                st.success(f"🎉 Congratulations! You've completed '{module['title']}'")
-                                st.balloons()
-                                st.rerun()
-                    with module_col2:
-                        if st.button(f"📥 Download Materials", key=f"download_{idx}", use_container_width=True):
-                            st.info("Study materials downloaded!")
+                    st.markdown(f"**{module['description']}**")
+                    content = module.get('content', {})
+                    if content:
+                        st.markdown(f"### 📋 Overview")
+                        st.info(content.get('overview', 'Content coming soon'))
+                        if 'key_concepts' in content:
+                            st.markdown("### 🔑 Key Concepts")
+                            for concept in content['key_concepts']:
+                                st.markdown(f"• **{concept.split(':')[0]}:** {':'.join(concept.split(':')[1:])}")
+                        if 'examples' in content:
+                            st.markdown("### 💡 Real-World Examples")
+                            for i, example in enumerate(content['examples'], 1):
+                                st.success(f"**Example {i}:** {example}")
+                        if 'benefits' in content:
+                            st.markdown("### ✨ Key Benefits")
+                            for benefit in content['benefits']:
+                                st.markdown(f"✓ {benefit}")
+                        if 'trading_mechanics' in content:
+                            st.markdown("### ⚙️ How It Works")
+                            for mechanic in content['trading_mechanics']:
+                                st.markdown(f"• {mechanic}")
+                        if 'strategies' in content:
+                            st.markdown("### 📊 Strategies")
+                            for strategy in content['strategies']:
+                                st.markdown(f"• {strategy}")
+                        if 'contract_elements' in content:
+                            st.markdown("### 📄 Contract Elements")
+                            for element in content['contract_elements']:
+                                st.markdown(f"• {element}")
+                        if 'best_practices' in content:
+                            st.markdown("### ⭐ Best Practices")
+                            for practice in content['best_practices']:
+                                st.markdown(f"✓ {practice}")
+                        if 'risk_types' in content:
+                            st.markdown("### ⚠️ Types of Risk")
+                            for risk in content['risk_types']:
+                                st.markdown(f"• {risk}")
+                        if 'measurement_tools' in content:
+                            st.markdown("### 📏 Measurement Tools")
+                            for tool in content['measurement_tools']:
+                                st.markdown(f"• {tool}")
+                        if 'mitigation_strategies' in content:
+                            st.markdown("### 🛡️ Risk Mitigation")
+                            for strategy in content['mitigation_strategies']:
+                                st.markdown(f"• {strategy}")
+                        if 'advanced_concepts' in content:
+                            st.markdown("### 🎓 Advanced Concepts")
+                            for concept in content['advanced_concepts']:
+                                st.markdown(f"• {concept}")
+                        if 'contract_specifications' in content:
+                            st.markdown("### 📋 Contract Specifications")
+                            for spec in content['contract_specifications']:
+                                st.markdown(f"• {spec}")
+                        if 'trading_process' in content:
+                            st.markdown("### 🔄 Trading Process")
+                            for step in content['trading_process']:
+                                st.markdown(f"{step}")
+                        if 'delivery_process' in content:
+                            st.markdown("### 🚚 Delivery Process")
+                            for step in content['delivery_process']:
+                                st.markdown(f"• {step}")
+                    if not module.get('completed', False):
+                        if st.button(f"✅ Mark as Complete", key=f"complete_{idx}", use_container_width=True, type="primary"):
+                            module['completed'] = True
+                            st.session_state.notifications.append(f"Completed: {module['title']}")
+                            st.success(f"🎉 Module completed!")
+                            st.balloons()
+                            st.rerun()
+                    else:
+                        st.success("✅ Module Completed")
+                        if st.button(f"🔄 Review Again", key=f"review_{idx}", use_container_width=True):
+                            st.info("Reviewing module content above")
         with tab2:
-            st.subheader("🎓 Professional Certifications")
-            st.markdown("""
-            ### Available Certifications:
-            **1. Certified Commodity Hedger (CCH)**
-            - Complete all beginner modules
-            - Pass assessment with 80%+ score
-            - Duration: 2-3 weeks
-            - Fee: ₹5,000
-            **2. Advanced Risk Management Professional (ARMP)**
-            - Complete all intermediate & advanced modules
-            - Complete 10+ successful hedging transactions
-            - Pass comprehensive exam
-            - Duration: 4-6 weeks
-            - Fee: ₹15,000
-            **3. NCDEX Trading Specialist**
-            - Platform-specific certification
-            - Live trading experience required
-            - Duration: 3 weeks
-            - Fee: ₹8,000
-            """)
-            if completion_rate == 100:
-                st.success("🎉 Eligible for certification! Contact support to schedule your exam.")
-                if st.button("📧 Request Certification Exam"):
-                    st.balloons()
-                    st.success("Certification request submitted! You'll receive exam details via email.")
-            else:
-                st.info(f"Complete all modules ({completion_rate:.0f}% done) to unlock certification eligibility.")
-        with tab3:
             st.subheader("📺 Video Tutorial Library")
+            st.markdown("**Educational videos on commodity trading and hedging strategies**")
             videos = [
-                {"title": "Introduction to Commodity Hedging", "duration": "15:30", "views": "2.3K", "category": "Beginner"},
-                {"title": "Understanding Futures vs Forwards", "duration": "22:45", "views": "1.8K", "category": "Intermediate"},
-                {"title": "NCDEX Platform Tutorial", "duration": "18:20", "views": "3.1K", "category": "Beginner"},
-                {"title": "Advanced Options Strategies", "duration": "35:15", "views": "890", "category": "Advanced"},
-                {"title": "Risk Management Best Practices", "duration": "28:40", "views": "1.5K", "category": "Intermediate"},
-                {"title": "Reading Market Indicators", "duration": "25:10", "views": "2.0K", "category": "Intermediate"}
+                {"title": "Introduction to Commodity Hedging", "duration": "15:30", "level": "Beginner", "link": "Learn how hedging protects farmers from price volatility", "topics": ["Price risk", "Hedge basics", "Farmer benefits"]},
+                {"title": "NCDEX Platform Complete Guide", "duration": "22:45", "level": "Beginner", "link": "Step-by-step guide to trading on NCDEX exchange", "topics": ["Account opening", "Order placement", "Margin system"]},
+                {"title": "Futures vs Forward Contracts", "duration": "18:20", "level": "Intermediate", "link": "Understanding the differences and when to use each", "topics": ["Standardization", "Risk comparison", "Liquidity"]},
+                {"title": "Technical Analysis for Commodities", "duration": "28:40", "level": "Intermediate", "link": "Chart patterns and indicators for commodity trading", "topics": ["Moving averages", "RSI", "Support/Resistance"]},
+                {"title": "Advanced Hedging Strategies", "duration": "35:15", "level": "Advanced", "link": "Complex strategies for portfolio hedging", "topics": ["Delta hedging", "Spread strategies", "Ratio hedging"]},
+                {"title": "Risk Management Masterclass", "duration": "42:10", "level": "Advanced", "link": "Comprehensive risk assessment and mitigation", "topics": ["VaR calculation", "Portfolio optimization", "Stress testing"]}
             ]
-            video_category = st.selectbox("Filter by Category", ['All', 'Beginner', 'Intermediate', 'Advanced'])
-            cols = st.columns(3)
-            for idx, video in enumerate(videos):
-                if video_category != 'All' and video['category'] != video_category:
-                    continue
-                with cols[idx % 3]:
+            video_level = st.selectbox("Filter by Level", ['All', 'Beginner', 'Intermediate', 'Advanced'], key="video_filter")
+            filtered_videos = [v for v in videos if video_level == 'All' or v['level'] == video_level]
+            cols = st.columns(2)
+            for idx, video in enumerate(filtered_videos):
+                with cols[idx % 2]:
                     st.markdown(f"### 🎬 {video['title']}")
-                    st.markdown(f"⏱️ {video['duration']} | 👁️ {video['views']} | 🎯 {video['category']}")
-                    if st.button(f"▶️ Watch", key=f"video_{idx}", use_container_width=True):
-                        st.info(f"Playing: {video['title']}")
+                    st.caption(f"⏱️ {video['duration']} | 🎯 {video['level']}")
+                    st.write(video['link'])
+                    with st.expander("📋 Topics Covered"):
+                        for topic in video['topics']:
+                            st.markdown(f"• {topic}")
+                    if st.button(f"▶️ Watch Now", key=f"video_{idx}", use_container_width=True):
+                        st.success(f"🎥 Opening: {video['title']}")
+                        st.info("💡 **Tip:** Take notes and practice with the Virtual Hedging simulator after watching!")
+        with tab3:
+            st.subheader("📝 Knowledge Assessment Quizzes")
+            st.write("Test your understanding with interactive quizzes")
+            quiz_topics = {
+                "Hedging Basics": {
+                    "level": "Beginner",
+                    "questions": [
+                        {
+                            "q": "What is the primary purpose of hedging in commodity trading?",
+                            "options": ["To maximize profits", "To reduce price risk", "To speculate on prices", "To increase trading volume"],
+                            "correct": 1,
+                            "explanation": "Hedging is primarily used to reduce or eliminate price risk, not to maximize profits. It provides price certainty."
+                        },
+                        {
+                            "q": "Which market position would a farmer take to hedge against falling prices?",
+                            "options": ["Long position (Buy)", "Short position (Sell)", "No position", "Both long and short"],
+                            "correct": 1,
+                            "explanation": "A farmer expecting to sell their harvest would take a short position (sell futures) to lock in current prices."
+                        },
+                        {
+                            "q": "What is basis risk?",
+                            "options": ["Risk of default", "Risk of delivery failure", "Difference between spot and futures prices", "Risk of margin call"],
+                            "correct": 2,
+                            "explanation": "Basis risk refers to the risk that the spot price and futures price don't move perfectly together."
+                        }
+                    ]
+                },
+                "Futures Trading": {
+                    "level": "Intermediate",
+                    "questions": [
+                        {
+                            "q": "What is the typical margin requirement for commodity futures in India?",
+                            "options": ["1-2%", "5-10%", "20-30%", "50%"],
+                            "correct": 1,
+                            "explanation": "Initial margin for commodity futures is typically 5-10% of the contract value, varying by commodity and volatility."
+                        },
+                        {
+                            "q": "What happens during mark-to-market settlement?",
+                            "options": ["Contracts are cancelled", "Profits/losses are settled daily", "Delivery is made", "Margins are refunded"],
+                            "correct": 1,
+                            "explanation": "Mark-to-market means daily settlement where profits are credited and losses are debited to traders' accounts."
+                        },
+                        {
+                            "q": "When should you square off a futures position?",
+                            "options": ["Only at expiry", "Only on profitable days", "Before expiry to avoid delivery", "Never"],
+                            "correct": 2,
+                            "explanation": "Most traders square off positions before expiry by taking an opposite position to avoid physical delivery."
+                        }
+                    ]
+                },
+                "Risk Management": {
+                    "level": "Advanced",
+                    "questions": [
+                        {
+                            "q": "What does a hedge ratio of 0.8 mean?",
+                            "options": ["80% profit guaranteed", "Hedge 80% of exposure", "20% margin required", "80% chance of success"],
+                            "correct": 1,
+                            "explanation": "A hedge ratio of 0.8 means you hedge 80% of your exposure, leaving 20% unhedged for potential upside."
+                        },
+                        {
+                            "q": "What is Value at Risk (VaR)?",
+                            "options": ["Maximum possible loss", "Maximum expected loss at confidence level", "Average daily loss", "Margin requirement"],
+                            "correct": 1,
+                            "explanation": "VaR estimates the maximum expected loss over a period at a given confidence level (e.g., 95%)."
+                        },
+                        {
+                            "q": "Which strategy combines long and short positions in different contract months?",
+                            "options": ["Arbitrage", "Spread trading", "Scalping", "Day trading"],
+                            "correct": 1,
+                            "explanation": "Spread trading involves simultaneous long and short positions in different months to profit from price differentials."
+                        }
+                    ]
+                }
+            }
+            selected_quiz = st.selectbox("Choose Quiz Topic", list(quiz_topics.keys()))
+            quiz_data = quiz_topics[selected_quiz]
+            st.info(f"📊 Level: {quiz_data['level']} | Questions: {len(quiz_data['questions'])}")
+            if f'quiz_{selected_quiz}' not in st.session_state.module_progress:
+                st.session_state.module_progress[f'quiz_{selected_quiz}'] = {'started': False, 'answers': {}, 'submitted': False}
+            quiz_state = st.session_state.module_progress[f'quiz_{selected_quiz}']
+            if not quiz_state['started']:
+                if st.button("🚀 Start Quiz", use_container_width=True, type="primary"):
+                    quiz_state['started'] = True
+                    quiz_state['answers'] = {}
+                    quiz_state['submitted'] = False
+                    st.rerun()
+            else:
+                if not quiz_state['submitted']:
+                    st.markdown("### Answer the following questions:")
+                    for i, question in enumerate(quiz_data['questions']):
+                        st.markdown(f"**Q{i+1}. {question['q']}**")
+                        answer = st.radio(
+                            "Select your answer:",
+                            question['options'],
+                            key=f"q_{selected_quiz}_{i}",
+                            index=quiz_state['answers'].get(i, 0)
+                        )
+                        quiz_state['answers'][i] = question['options'].index(answer)
+                        st.divider()
+                    if st.button("✅ Submit Quiz", use_container_width=True, type="primary"):
+                        quiz_state['submitted'] = True
+                        st.rerun()
+                else:
+                    correct_count = 0
+                    for i, question in enumerate(quiz_data['questions']):
+                        user_answer = quiz_state['answers'].get(i, -1)
+                        is_correct = user_answer == question['correct']
+                        if is_correct:
+                            correct_count += 1
+                        st.markdown(f"**Q{i+1}. {question['q']}**")
+                        if is_correct:
+                            st.success(f"✅ Correct! Your answer: {question['options'][user_answer]}")
+                        else:
+                            st.error(f"❌ Wrong. Your answer: {question['options'][user_answer]}")
+                            st.info(f"Correct answer: {question['options'][question['correct']]}")
+                        st.info(f"💡 {question['explanation']}")
+                        st.divider()
+                    score_pct = (correct_count / len(quiz_data['questions'])) * 100
+                    st.markdown(f"### 📊 Your Score: {correct_count}/{len(quiz_data['questions'])} ({score_pct:.0f}%)")
+                    if score_pct >= 80:
+                        st.success("🎉 Excellent! You've mastered this topic!")
+                        st.balloons()
+                    elif score_pct >= 60:
+                        st.info("👍 Good job! Review the concepts you missed.")
+                    else:
+                        st.warning("📚 Keep learning! Review the module content and try again.")
+                    if st.button("🔄 Retake Quiz", use_container_width=True):
+                        quiz_state['started'] = False
+                        quiz_state['answers'] = {}
+                        quiz_state['submitted'] = False
+                        st.rerun()
+        with tab4:
+            st.subheader("📄 Expert Articles & Guides")
+            articles = [
+                {
+                    "title": "Complete Guide to Oilseed Hedging in India",
+                    "category": "Comprehensive Guide",
+                    "level": "All Levels",
+                    "reading_time": "12 min",
+                    "url": "https://www.commoditiescontrol.com/eagritrader/commodityknowledge/futurstrading/hedging.htm",
+                    "summary": "Everything you need to know about hedging oilseeds including soybean, mustard, and groundnut.",
+                    "key_points": [
+                        "Understanding Indian oilseed markets and seasonal patterns",
+                        "Step-by-step hedging strategies for different crops",
+                        "NCDEX contract specifications and trading hours",
+                        "Real case studies from successful farmers"
+                    ]
+                },
+                {
+                    "title": "Understanding Futures Trading on NCDEX",
+                    "category": "Trading Basics",
+                    "level": "Beginner",
+                    "reading_time": "10 min",
+                    "url": "https://www.ncdex.com/market-pulse/knowledge-centre",
+                    "summary": "Official NCDEX guide to futures trading covering contracts, margins, and settlement.",
+                    "key_points": [
+                        "Contract specifications for agricultural commodities",
+                        "Margin requirements and mark-to-market process",
+                        "Trading hours and settlement procedures",
+                        "Delivery and quality standards"
+                    ]
+                },
+                {
+                    "title": "Managing Basis Risk in Agricultural Commodities",
+                    "category": "Risk Management",
+                    "level": "Intermediate",
+                    "reading_time": "8 min",
+                    "url": "https://www.investopedia.com/terms/b/basisrisk.asp",
+                    "summary": "Learn how to minimize basis risk when hedging agricultural commodities.",
+                    "key_points": [
+                        "What causes basis to widen or narrow",
+                        "Historical basis patterns in markets",
+                        "Strategies to reduce basis risk exposure",
+                        "Choosing the right delivery month"
+                    ]
+                },
+                {
+                    "title": "Forward Contracts vs Futures: Making the Right Choice",
+                    "category": "Strategy",
+                    "level": "Beginner",
+                    "reading_time": "6 min",
+                    "url": "https://www.investopedia.com/ask/answers/difference-between-forward-and-futures-contracts/",
+                    "summary": "Compare forward and futures contracts to determine which hedging tool is right for your needs.",
+                    "key_points": [
+                        "Key differences in flexibility and standardization",
+                        "Credit risk vs market risk considerations",
+                        "Liquidity and transaction costs comparison",
+                        "When to use each instrument effectively"
+                    ]
+                },
+                {
+                    "title": "Commodity Trading Strategies for Beginners",
+                    "category": "Trading Basics",
+                    "level": "Beginner",
+                    "reading_time": "15 min",
+                    "url": "https://economictimes.indiatimes.com/markets/commodities",
+                    "summary": "Essential trading strategies and risk management tips for new commodity traders.",
+                    "key_points": [
+                        "Understanding market fundamentals",
+                        "Position sizing and risk management",
+                        "Technical analysis basics",
+                        "Common mistakes to avoid"
+                    ]
+                },
+                {
+                    "title": "Seasonal Patterns in Oilseed Prices",
+                    "category": "Market Analysis",
+                    "level": "Intermediate",
+                    "reading_time": "10 min",
+                    "url": "https://agmarknet.gov.in/",
+                    "summary": "Understand seasonal price movements to time your hedging decisions better.",
+                    "key_points": [
+                        "Harvest season impact on prices",
+                        "Festival demand spikes",
+                        "Import policy effects",
+                        "Weather patterns and volatility"
+                    ]
+                },
+                {
+                    "title": "Technical Analysis in Commodity Markets",
+                    "category": "Market Analysis",
+                    "level": "Intermediate",
+                    "reading_time": "12 min",
+                    "url": "https://www.investopedia.com/articles/trading/09/commodity-technical-analysis.asp",
+                    "summary": "Learn to use charts and indicators for better trading decisions.",
+                    "key_points": [
+                        "Key chart patterns",
+                        "Moving averages and trends",
+                        "Support and resistance",
+                        "Volume analysis"
+                    ]
+                },
+                {
+                    "title": "Risk Management in Agricultural Futures",
+                    "category": "Risk Management",
+                    "level": "Advanced",
+                    "reading_time": "14 min",
+                    "url": "https://www.cmegroup.com/education/courses/risk-management.html",
+                    "summary": "Comprehensive guide to managing risks in agricultural commodity trading.",
+                    "key_points": [
+                        "Value at Risk calculation",
+                        "Portfolio diversification",
+                        "Stop-loss strategies",
+                        "Stress testing"
+                    ]
+                },
+                {
+                    "title": "Indian Agricultural Market Live Data",
+                    "category": "Market Data",
+                    "level": "All Levels",
+                    "reading_time": "Live",
+                    "url": "https://agmarknet.gov.in/PriceAndArrivals/CommodityWise.aspx",
+                    "summary": "Real-time market prices and arrivals data from agricultural markets across India.",
+                    "key_points": [
+                        "Daily mandi prices by commodity",
+                        "Arrival trends and supply",
+                        "State-wise production data",
+                        "Historical comparisons"
+                    ]
+                },
+                {
+                    "title": "Options Trading in Commodities",
+                    "category": "Advanced Strategy",
+                    "level": "Advanced",
+                    "reading_time": "18 min",
+                    "url": "https://www.investopedia.com/options-basics-tutorial-4583012",
+                    "summary": "Use options for hedging and generating income from commodity positions.",
+                    "key_points": [
+                        "Call and put fundamentals",
+                        "Protective puts for downside",
+                        "Covered calls for income",
+                        "Collar strategies"
+                    ]
+                }
+            ]
+            article_category = st.selectbox("Filter by Category", 
+                ['All', 'Comprehensive Guide', 'Trading Basics', 'Risk Management', 'Strategy', 'Market Analysis', 'Market Data', 'Advanced Strategy'],
+                key="article_filter")
+            filtered_articles = [a for a in articles if article_category == 'All' or a['category'] == article_category]
+            for idx, article in enumerate(filtered_articles):
+                with st.expander(f"📰 {article['title']} - {article['reading_time']} read"):
+                    col1, col2 = st.columns([3, 1])
+                    with col1:
+                        st.markdown(f"**Category:** {article['category']}")
+                        st.markdown(f"**Level:** {article['level']}")
+                    with col2:
+                        st.markdown(f"**⏱️ {article['reading_time']}**")
+                    st.write(article['summary'])
+                    st.markdown("**📌 Key Points Covered:**")
+                    for point in article['key_points']:
+                        st.markdown(f"• {point}")
+                    col_a, col_b = st.columns(2)
+                    with col_a:
+                        st.markdown(f"🔗 [**Read Full Article →**]({article['url']})")
+                    with col_b:
+                        if st.button(f"📋 Copy Link", key=f"copy_{idx}"):
+                            st.code(article['url'], language=None)
     elif menu == "📊 Analytics":
         st.header("📊 Advanced Analytics & Insights")
         tab1, tab2, tab3 = st.tabs(["📈 Market Analysis", "🔥 Heat Maps", "📉 Volatility Analysis"])
