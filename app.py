@@ -962,18 +962,199 @@ else:
     elif menu == "📚 Learning Hub":
         st.header("📚 Educational Learning Hub")
         st.write("Master hedging strategies, risk management, and commodity trading through interactive content.")
+        if 'module_progress' not in st.session_state:
+            st.session_state.module_progress = {}
         tab1, tab2, tab3, tab4 = st.tabs(["📖 Course Modules", "📺 Video Library", "📝 Quizzes", "📄 Articles"])
         with tab1:
             st.subheader("📖 Interactive Learning Modules")
-            progress_modules = [m for m in st.session_state.educational_modules if m.get('completed', False)]
-            completion_rate = (len(progress_modules) / len(st.session_state.educational_modules) * 100) if st.session_state.educational_modules else 0
+            modules_with_content = [
+                {
+                    'title': 'Introduction to Hedging',
+                    'description': 'Learn the basics of hedging and how it protects against price volatility',
+                    'duration': '15 mins',
+                    'level': 'Beginner',
+                    'completed': False,
+                    'video': 'https://www.youtube.com/watch?v=ybuEF3Wf96E',
+                    'content': {
+                        'overview': 'Hedging is a risk management strategy used to offset potential losses in investments by taking opposite positions in related assets.',
+                        'key_concepts': [
+                            'Price Risk: Uncertainty about future prices of commodities',
+                            'Hedging: Taking offsetting positions to reduce risk',
+                            'Basis: Difference between spot and futures prices',
+                            'Long Hedge: Buying futures to protect against price increases',
+                            'Short Hedge: Selling futures to protect against price decreases'
+                        ],
+                        'examples': [
+                            'A farmer expecting to harvest 100 quintals of soybean in 3 months sells futures contracts to lock in current prices',
+                            'An oil miller planning to buy groundnut next month buys futures to protect against price increases',
+                            'A trader with inventory sells futures to hedge against falling prices'
+                        ],
+                        'benefits': [
+                            'Price certainty and budget planning',
+                            'Protection against adverse price movements',
+                            'Improved cash flow management',
+                            'Reduced financial stress',
+                            'Better negotiating power with buyers'
+                        ]
+                    }
+                },
+                {
+                    'title': 'Understanding Futures Contracts',
+                    'description': 'Deep dive into futures trading mechanisms and strategies',
+                    'duration': '25 mins',
+                    'level': 'Intermediate',
+                    'completed': False,
+                    'video': 'https://www.youtube.com/watch?v=VmdEKvB0OUs',
+                    'content': {
+                        'overview': 'Futures contracts are standardized agreements to buy or sell a commodity at a predetermined price on a specific future date.',
+                        'key_concepts': [
+                            'Standardization: Fixed contract sizes, quality specifications, and delivery dates',
+                            'Margin: Initial deposit required to open positions (typically 5-10%)',
+                            'Mark-to-Market: Daily settlement of profits and losses',
+                            'Contract Months: Specific months when contracts expire',
+                            'Settlement: Physical delivery or cash settlement at expiry'
+                        ],
+                        'trading_mechanics': [
+                            'Opening Position: Buy (Long) or Sell (Short) futures contract',
+                            'Maintenance Margin: Minimum balance required in account',
+                            'Margin Call: Request to deposit more funds if margin falls below minimum',
+                            'Square Off: Close position by taking opposite trade before expiry',
+                            'Delivery: Physical exchange of commodity at contract expiry'
+                        ],
+                        'strategies': [
+                            'Pure Hedging: Offsetting physical position with opposite futures position',
+                            'Selective Hedging: Hedging only when prices are favorable',
+                            'Rolling Hedge: Continuously maintaining hedge by rolling contracts forward',
+                            'Cross Hedging: Using related commodity futures when direct futures unavailable'
+                        ]
+                    }
+                },
+                {
+                    'title': 'Forward Contract Management',
+                    'description': 'Learn to create and manage forward contracts effectively',
+                    'duration': '20 mins',
+                    'level': 'Intermediate',
+                    'completed': False,
+                    'video': 'https://www.youtube.com/watch?v=vXK_tZwFPKY',
+                    'content': {
+                        'overview': 'Forward contracts are customized agreements between two parties to buy or sell a commodity at a specific price on a future date.',
+                        'key_concepts': [
+                            'Customization: Flexible terms on quantity, quality, price, and delivery',
+                            'Counter-party Risk: Risk that other party may default',
+                            'No Daily Settlement: Unlike futures, settled only at maturity',
+                            'Over-the-Counter: Traded directly between parties, not on exchanges',
+                            'Contract Enforcement: Legal agreement between buyer and seller'
+                        ],
+                        'contract_elements': [
+                            'Commodity Type and Quality Grade',
+                            'Quantity to be delivered',
+                            'Price per unit',
+                            'Delivery date and location',
+                            'Payment terms (advance, on delivery, credit)',
+                            'Quality specifications and penalties',
+                            'Force majeure clauses'
+                        ],
+                        'best_practices': [
+                            'Clear documentation of all terms',
+                            'Include quality specifications with testing procedures',
+                            'Specify delivery logistics and responsibilities',
+                            'Include dispute resolution mechanism',
+                            'Consider advance payment to reduce default risk',
+                            'Verify counter-party credibility'
+                        ]
+                    }
+                },
+                {
+                    'title': 'Risk Assessment & Management',
+                    'description': 'Advanced techniques for assessing and managing market risks',
+                    'duration': '30 mins',
+                    'level': 'Advanced',
+                    'completed': False,
+                    'video': 'https://www.youtube.com/watch?v=7Ku4aNbLhf4',
+                    'content': {
+                        'overview': 'Comprehensive risk management involves identifying, measuring, and mitigating various types of risks in commodity trading.',
+                        'risk_types': [
+                            'Price Risk: Adverse movements in commodity prices',
+                            'Basis Risk: Changes in price difference between spot and futures',
+                            'Liquidity Risk: Difficulty in entering or exiting positions',
+                            'Counter-party Risk: Default by other party in contract',
+                            'Operational Risk: Failures in systems, processes, or people',
+                            'Regulatory Risk: Changes in laws or regulations'
+                        ],
+                        'measurement_tools': [
+                            'Value at Risk (VaR): Maximum expected loss at given confidence level',
+                            'Standard Deviation: Measure of price volatility',
+                            'Beta: Sensitivity to market movements',
+                            'Correlation Analysis: Relationship between different assets',
+                            'Stress Testing: Impact of extreme scenarios'
+                        ],
+                        'mitigation_strategies': [
+                            'Diversification across multiple commodities and time periods',
+                            'Position Limits: Maximum exposure per commodity or trade',
+                            'Stop-Loss Orders: Automatic exit at predetermined loss levels',
+                            'Portfolio Hedging: Offsetting correlated positions',
+                            'Insurance Products: Crop insurance, weather derivatives',
+                            'Regular Monitoring: Daily review of positions and market conditions'
+                        ],
+                        'advanced_concepts': [
+                            'Delta Hedging: Adjusting hedge ratio based on price sensitivity',
+                            'Dynamic Hedging: Continuously rebalancing hedge positions',
+                            'Options Strategies: Using puts and calls for flexible protection',
+                            'Spread Trading: Profiting from price differences between related contracts',
+                            'Portfolio Optimization: Balancing risk and return efficiently'
+                        ]
+                    }
+                },
+                {
+                    'title': 'NCDEX Trading Basics',
+                    'description': 'Understanding NCDEX platform and trading mechanisms',
+                    'duration': '20 mins',
+                    'level': 'Beginner',
+                    'completed': False,
+                    'video': 'https://www.youtube.com/watch?v=HKbr7B8ydcE',
+                    'content': {
+                        'overview': 'National Commodity & Derivatives Exchange (NCDEX) is India\'s premier commodity exchange for agricultural commodities.',
+                        'key_concepts': [
+                            'Exchange Trading: Centralized, transparent price discovery',
+                            'Clearing Corporation: Guarantees all trades, eliminates counter-party risk',
+                            'SEBI Regulation: Regulated by Securities and Exchange Board of India',
+                            'Trading Hours: Monday to Friday, 10:00 AM to 5:00 PM',
+                            'Settlement: T+1 for most commodities'
+                        ],
+                        'contract_specifications': [
+                            'Soybean: 10 MT lot size, delivery centers across India',
+                            'Mustard Seed: 10 MT lot size, Jaipur/Alwar delivery',
+                            'Groundnut: 10 MT lot size, Rajkot delivery',
+                            'Soy Oil: 10 MT lot size, multiple delivery centers',
+                            'Expiry: Last working day of contract month'
+                        ],
+                        'trading_process': [
+                            '1. Open trading account with NCDEX-registered broker',
+                            '2. Complete KYC documentation',
+                            '3. Fund account with required margin',
+                            '4. Place orders through broker terminal or online platform',
+                            '5. Monitor positions and maintain adequate margins',
+                            '6. Square off before expiry or take delivery'
+                        ],
+                        'delivery_process': [
+                            'Intent Declaration 5 days before expiry',
+                            'Pay-in and Pay-out of commodities',
+                            'Quality certification by accredited agencies',
+                            'Delivery at exchange-approved warehouses',
+                            'Final settlement within 2 days'
+                        ]
+                    }
+                }
+            ]
+            progress_modules = [m for m in modules_with_content if m.get('completed', False)]
+            completion_rate = (len(progress_modules) / len(modules_with_content) * 100) if modules_with_content else 0
             prog_col1, prog_col2, prog_col3 = st.columns(3)
-            prog_col1.metric("Total Modules", len(st.session_state.educational_modules))
+            prog_col1.metric("Total Modules", len(modules_with_content))
             prog_col2.metric("Completed", len(progress_modules))
             prog_col3.metric("Progress", f"{completion_rate:.0f}%")
             st.progress(completion_rate / 100)
             level_filter = st.multiselect("Filter by Level", ['All', 'Beginner', 'Intermediate', 'Advanced'], default=['All'])
-            for idx, module in enumerate(st.session_state.educational_modules):
+            for idx, module in enumerate(modules_with_content):
                 if 'All' not in level_filter and module['level'] not in level_filter:
                     continue
                 status_icon = "✅" if module.get('completed', False) else "📘"
@@ -981,6 +1162,8 @@ else:
                 level_icon = level_colors.get(module['level'], '⚪')
                 with st.expander(f"{status_icon} {module['title']} {level_icon} {module['level']} - {module['duration']}"):
                     st.markdown(f"**{module['description']}**")
+                    st.markdown(f"🎥 [**Watch Video Tutorial**]({module['video']})")
+                    st.divider()
                     content = module.get('content', {})
                     if content:
                         st.markdown(f"### 📋 Overview")
@@ -988,7 +1171,7 @@ else:
                         if 'key_concepts' in content:
                             st.markdown("### 🔑 Key Concepts")
                             for concept in content['key_concepts']:
-                                st.markdown(f"• **{concept.split(':')[0]}:** {':'.join(concept.split(':')[1:])}")
+                                st.markdown(f"• **{concept.split(':')[0]}:** {':'.join(concept.split(':')[1:])}" if ':' in concept else f"• {concept}")
                         if 'examples' in content:
                             st.markdown("### 💡 Real-World Examples")
                             for i, example in enumerate(content['examples'], 1):
@@ -1056,12 +1239,12 @@ else:
             st.subheader("📺 Video Tutorial Library")
             st.markdown("**Educational videos on commodity trading and hedging strategies**")
             videos = [
-                {"title": "Introduction to Commodity Hedging", "duration": "15:30", "level": "Beginner", "link": "Learn how hedging protects farmers from price volatility", "topics": ["Price risk", "Hedge basics", "Farmer benefits"]},
-                {"title": "NCDEX Platform Complete Guide", "duration": "22:45", "level": "Beginner", "link": "Step-by-step guide to trading on NCDEX exchange", "topics": ["Account opening", "Order placement", "Margin system"]},
-                {"title": "Futures vs Forward Contracts", "duration": "18:20", "level": "Intermediate", "link": "Understanding the differences and when to use each", "topics": ["Standardization", "Risk comparison", "Liquidity"]},
-                {"title": "Technical Analysis for Commodities", "duration": "28:40", "level": "Intermediate", "link": "Chart patterns and indicators for commodity trading", "topics": ["Moving averages", "RSI", "Support/Resistance"]},
-                {"title": "Advanced Hedging Strategies", "duration": "35:15", "level": "Advanced", "link": "Complex strategies for portfolio hedging", "topics": ["Delta hedging", "Spread strategies", "Ratio hedging"]},
-                {"title": "Risk Management Masterclass", "duration": "42:10", "level": "Advanced", "link": "Comprehensive risk assessment and mitigation", "topics": ["VaR calculation", "Portfolio optimization", "Stress testing"]}
+                {"title": "Introduction to Commodity Hedging", "duration": "15:30", "level": "Beginner", "link": "https://www.youtube.com/watch?v=ybuEF3Wf96E", "description": "Learn how hedging protects farmers from price volatility", "topics": ["Price risk", "Hedge basics", "Farmer benefits"]},
+                {"title": "NCDEX Platform Complete Guide", "duration": "22:45", "level": "Beginner", "link": "https://www.youtube.com/watch?v=HKbr7B8ydcE", "description": "Step-by-step guide to trading on NCDEX exchange", "topics": ["Account opening", "Order placement", "Margin system"]},
+                {"title": "Futures vs Forward Contracts", "duration": "18:20", "level": "Intermediate", "link": "https://www.youtube.com/watch?v=vXK_tZwFPKY", "description": "Understanding the differences and when to use each", "topics": ["Standardization", "Risk comparison", "Liquidity"]},
+                {"title": "Technical Analysis for Commodities", "duration": "28:40", "level": "Intermediate", "link": "https://www.youtube.com/watch?v=VmdEKvB0OUs", "description": "Chart patterns and indicators for commodity trading", "topics": ["Moving averages", "RSI", "Support/Resistance"]},
+                {"title": "Advanced Hedging Strategies", "duration": "35:15", "level": "Advanced", "link": "https://www.youtube.com/watch?v=7Ku4aNbLhf4", "description": "Complex strategies for portfolio hedging", "topics": ["Delta hedging", "Spread strategies", "Ratio hedging"]},
+                {"title": "Risk Management Masterclass", "duration": "42:10", "level": "Advanced", "link": "https://www.youtube.com/watch?v=MXKPOGkUyxI", "description": "Comprehensive risk assessment and mitigation", "topics": ["VaR calculation", "Portfolio optimization", "Stress testing"]}
             ]
             video_level = st.selectbox("Filter by Level", ['All', 'Beginner', 'Intermediate', 'Advanced'], key="video_filter")
             filtered_videos = [v for v in videos if video_level == 'All' or v['level'] == video_level]
@@ -1070,18 +1253,17 @@ else:
                 with cols[idx % 2]:
                     st.markdown(f"### 🎬 {video['title']}")
                     st.caption(f"⏱️ {video['duration']} | 🎯 {video['level']}")
-                    st.write(video['link'])
+                    st.write(video['description'])
                     with st.expander("📋 Topics Covered"):
                         for topic in video['topics']:
                             st.markdown(f"• {topic}")
-                    if st.button(f"▶️ Watch Now", key=f"video_{idx}", use_container_width=True):
-                        st.success(f"🎥 Opening: {video['title']}")
-                        st.info("💡 **Tip:** Take notes and practice with the Virtual Hedging simulator after watching!")
+                    st.markdown(f"🎥 [**Watch on YouTube**]({video['link']})")
+                    st.divider()
         with tab3:
             st.subheader("📝 Knowledge Assessment Quizzes")
             st.write("Test your understanding with interactive quizzes")
             quiz_topics = {
-                "Hedging Basics": {
+                "Hedging Fundamentals": {
                     "level": "Beginner",
                     "questions": [
                         {
@@ -1097,18 +1279,30 @@ else:
                             "explanation": "A farmer expecting to sell their harvest would take a short position (sell futures) to lock in current prices."
                         },
                         {
-                            "q": "What is basis risk?",
-                            "options": ["Risk of default", "Risk of delivery failure", "Difference between spot and futures prices", "Risk of margin call"],
+                            "q": "What is basis risk in commodity hedging?",
+                            "options": ["Risk of default", "Risk of delivery failure", "Difference between spot and futures prices changing", "Risk of margin call"],
                             "correct": 2,
                             "explanation": "Basis risk refers to the risk that the spot price and futures price don't move perfectly together."
+                        },
+                        {
+                            "q": "When is the best time for a farmer to hedge their expected harvest?",
+                            "options": ["After harvest", "During harvest", "Before harvest when prices are favorable", "Never"],
+                            "correct": 2,
+                            "explanation": "Farmers should hedge before harvest when market prices are favorable to lock in good prices for their upcoming production."
+                        },
+                        {
+                            "q": "What does 'squaring off' a futures position mean?",
+                            "options": ["Delivering the commodity", "Canceling the contract", "Taking opposite position to close", "Increasing position size"],
+                            "correct": 2,
+                            "explanation": "Squaring off means closing your position by taking an equal and opposite trade before contract expiry."
                         }
                     ]
                 },
-                "Futures Trading": {
+                "Futures Trading Mechanics": {
                     "level": "Intermediate",
                     "questions": [
                         {
-                            "q": "What is the typical margin requirement for commodity futures in India?",
+                            "q": "What is the typical initial margin requirement for commodity futures in India?",
                             "options": ["1-2%", "5-10%", "20-30%", "50%"],
                             "correct": 1,
                             "explanation": "Initial margin for commodity futures is typically 5-10% of the contract value, varying by commodity and volatility."
@@ -1120,10 +1314,57 @@ else:
                             "explanation": "Mark-to-market means daily settlement where profits are credited and losses are debited to traders' accounts."
                         },
                         {
-                            "q": "When should you square off a futures position?",
-                            "options": ["Only at expiry", "Only on profitable days", "Before expiry to avoid delivery", "Never"],
+                            "q": "What is a margin call?",
+                            "options": ["Request to close position", "Request to deposit additional funds", "Notification of profit", "Contract expiry notice"],
+                            "correct": 1,
+                            "explanation": "A margin call is issued when your account balance falls below the maintenance margin, requiring additional funds."
+                        },
+                        {
+                            "q": "What is the standard lot size for Soybean futures on NCDEX?",
+                            "options": ["1 MT", "5 MT", "10 MT", "100 MT"],
                             "correct": 2,
-                            "explanation": "Most traders square off positions before expiry by taking an opposite position to avoid physical delivery."
+                            "explanation": "NCDEX Soybean futures have a standard lot size of 10 metric tons (MT)."
+                        },
+                        {
+                            "q": "When do most NCDEX commodity futures contracts expire?",
+                            "options": ["15th of the month", "Last working day of month", "First day of month", "Any day trader chooses"],
+                            "correct": 1,
+                            "explanation": "Most NCDEX contracts expire on the last working day of the contract month."
+                        }
+                    ]
+                },
+                "Forward Contracts": {
+                    "level": "Intermediate",
+                    "questions": [
+                        {
+                            "q": "What is the main difference between futures and forward contracts?",
+                            "options": ["Price", "Standardization", "Duration", "Commodity type"],
+                            "correct": 1,
+                            "explanation": "Futures are standardized and exchange-traded, while forwards are customized and traded over-the-counter."
+                        },
+                        {
+                            "q": "What is counter-party risk in forward contracts?",
+                            "options": ["Price risk", "Risk of default by other party", "Quality risk", "Delivery risk"],
+                            "correct": 1,
+                            "explanation": "Counter-party risk is the risk that the other party in the contract may fail to fulfill their obligations."
+                        },
+                        {
+                            "q": "Which payment term offers the most protection to the seller in a forward contract?",
+                            "options": ["30 days credit", "On delivery", "50% advance", "100% advance"],
+                            "correct": 3,
+                            "explanation": "100% advance payment provides maximum protection to the seller against buyer default."
+                        },
+                        {
+                            "q": "What should be clearly specified in a forward contract?",
+                            "options": ["Only price", "Only quantity", "Price, quantity, quality, delivery terms", "Only delivery date"],
+                            "correct": 2,
+                            "explanation": "A complete forward contract must specify price, quantity, quality standards, delivery date, location, and payment terms."
+                        },
+                        {
+                            "q": "How are forward contracts typically settled?",
+                            "options": ["Daily mark-to-market", "Physical delivery only", "Cash settlement or physical delivery", "Never settled"],
+                            "correct": 2,
+                            "explanation": "Forward contracts can be settled through physical delivery of the commodity or cash settlement at maturity."
                         }
                     ]
                 },
@@ -1147,6 +1388,53 @@ else:
                             "options": ["Arbitrage", "Spread trading", "Scalping", "Day trading"],
                             "correct": 1,
                             "explanation": "Spread trading involves simultaneous long and short positions in different months to profit from price differentials."
+                        },
+                        {
+                            "q": "What is delta hedging?",
+                            "options": ["Fixed hedge ratio", "Dynamic adjustment of hedge ratio", "One-time hedge", "No hedging"],
+                            "correct": 1,
+                            "explanation": "Delta hedging involves continuously adjusting the hedge ratio based on changes in the option's delta or price sensitivity."
+                        },
+                        {
+                            "q": "What does diversification help reduce?",
+                            "options": ["All risks", "Unsystematic risk", "Systematic risk", "No risks"],
+                            "correct": 1,
+                            "explanation": "Diversification helps reduce unsystematic (specific) risk but cannot eliminate systematic (market) risk."
+                        }
+                    ]
+                },
+                "NCDEX Trading": {
+                    "level": "Beginner",
+                    "questions": [
+                        {
+                            "q": "What does NCDEX stand for?",
+                            "options": ["National Commodity Development Exchange", "National Commodity & Derivatives Exchange", "New Commodity Distribution Exchange", "National Commercial Exchange"],
+                            "correct": 1,
+                            "explanation": "NCDEX stands for National Commodity & Derivatives Exchange, India's premier agricultural commodity exchange."
+                        },
+                        {
+                            "q": "Who regulates NCDEX?",
+                            "options": ["RBI", "SEBI", "Ministry of Agriculture", "Stock exchanges"],
+                            "correct": 1,
+                            "explanation": "NCDEX is regulated by SEBI (Securities and Exchange Board of India)."
+                        },
+                        {
+                            "q": "What are the trading hours for NCDEX?",
+                            "options": ["9 AM to 11 PM", "10 AM to 5 PM", "24 hours", "10 AM to 11:30 PM"],
+                            "correct": 1,
+                            "explanation": "NCDEX trades from 10:00 AM to 5:00 PM on weekdays (Monday to Friday)."
+                        },
+                        {
+                            "q": "What eliminates counter-party risk in exchange-traded futures?",
+                            "options": ["Broker guarantee", "Clearing corporation guarantee", "Government guarantee", "No guarantee needed"],
+                            "correct": 1,
+                            "explanation": "The clearing corporation acts as the central counterparty and guarantees all trades, eliminating counter-party risk."
+                        },
+                        {
+                            "q": "When must delivery intent be declared on NCDEX?",
+                            "options": ["At contract opening", "On expiry day", "5 days before expiry", "After expiry"],
+                            "correct": 2,
+                            "explanation": "Delivery intent must be declared approximately 5 days before the contract expiry date."
                         }
                     ]
                 }
@@ -1217,7 +1505,7 @@ else:
                     "level": "All Levels",
                     "reading_time": "12 min",
                     "url": "https://www.commoditiescontrol.com/eagritrader/commodityknowledge/futurstrading/hedging.htm",
-                    "summary": "Everything you need to know about hedging oilseeds including soybean, mustard, and groundnut.",
+                    "summary": "Everything you need to know about hedging oilseeds including soybean, mustard, and groundnut in Indian markets.",
                     "key_points": [
                         "Understanding Indian oilseed markets and seasonal patterns",
                         "Step-by-step hedging strategies for different crops",
@@ -1231,7 +1519,7 @@ else:
                     "level": "Beginner",
                     "reading_time": "10 min",
                     "url": "https://www.ncdex.com/market-pulse/knowledge-centre",
-                    "summary": "Official NCDEX guide to futures trading covering contracts, margins, and settlement.",
+                    "summary": "Official NCDEX guide to futures trading covering contracts, margins, and settlement procedures.",
                     "key_points": [
                         "Contract specifications for agricultural commodities",
                         "Margin requirements and mark-to-market process",
@@ -1248,7 +1536,7 @@ else:
                     "summary": "Learn how to minimize basis risk when hedging agricultural commodities.",
                     "key_points": [
                         "What causes basis to widen or narrow",
-                        "Historical basis patterns in markets",
+                        "Historical basis patterns in Indian markets",
                         "Strategies to reduce basis risk exposure",
                         "Choosing the right delivery month"
                     ]
@@ -1268,17 +1556,17 @@ else:
                     ]
                 },
                 {
-                    "title": "Commodity Trading Strategies for Beginners",
+                    "title": "Commodity Trading Strategies for Indian Farmers",
                     "category": "Trading Basics",
                     "level": "Beginner",
                     "reading_time": "15 min",
                     "url": "https://economictimes.indiatimes.com/markets/commodities",
                     "summary": "Essential trading strategies and risk management tips for new commodity traders.",
                     "key_points": [
-                        "Understanding market fundamentals",
-                        "Position sizing and risk management",
-                        "Technical analysis basics",
-                        "Common mistakes to avoid"
+                        "Understanding market fundamentals and price drivers",
+                        "Position sizing and risk management rules",
+                        "Technical analysis basics for commodities",
+                        "Common mistakes to avoid in commodity trading"
                     ]
                 },
                 {
@@ -1289,10 +1577,10 @@ else:
                     "url": "https://agmarknet.gov.in/",
                     "summary": "Understand seasonal price movements to time your hedging decisions better.",
                     "key_points": [
-                        "Harvest season impact on prices",
-                        "Festival demand spikes",
-                        "Import policy effects",
-                        "Weather patterns and volatility"
+                        "Harvest season impact on oilseed prices",
+                        "Festival demand spikes and price volatility",
+                        "Import policy effects on domestic markets",
+                        "Weather patterns and production forecasts"
                     ]
                 },
                 {
@@ -1301,12 +1589,12 @@ else:
                     "level": "Intermediate",
                     "reading_time": "12 min",
                     "url": "https://www.investopedia.com/articles/trading/09/commodity-technical-analysis.asp",
-                    "summary": "Learn to use charts and indicators for better trading decisions.",
+                    "summary": "Learn to use charts and indicators for better trading decisions in commodity markets.",
                     "key_points": [
-                        "Key chart patterns",
-                        "Moving averages and trends",
-                        "Support and resistance",
-                        "Volume analysis"
+                        "Key chart patterns specific to commodities",
+                        "Moving averages and trend identification",
+                        "Support and resistance levels",
+                        "Volume analysis and price confirmation"
                     ]
                 },
                 {
@@ -1314,13 +1602,13 @@ else:
                     "category": "Risk Management",
                     "level": "Advanced",
                     "reading_time": "14 min",
-                    "url": "https://www.cmegroup.com/education/courses/risk-management.html",
+                    "url": "https://www.cmegroup.com/education/courses/introduction-to-futures/understanding-risk-management.html",
                     "summary": "Comprehensive guide to managing risks in agricultural commodity trading.",
                     "key_points": [
-                        "Value at Risk calculation",
-                        "Portfolio diversification",
-                        "Stop-loss strategies",
-                        "Stress testing"
+                        "Value at Risk (VaR) calculation methods",
+                        "Portfolio diversification strategies",
+                        "Stop-loss and take-profit strategies",
+                        "Stress testing and scenario analysis"
                     ]
                 },
                 {
@@ -1331,10 +1619,24 @@ else:
                     "url": "https://agmarknet.gov.in/PriceAndArrivals/CommodityWise.aspx",
                     "summary": "Real-time market prices and arrivals data from agricultural markets across India.",
                     "key_points": [
-                        "Daily mandi prices by commodity",
-                        "Arrival trends and supply",
-                        "State-wise production data",
-                        "Historical comparisons"
+                        "Daily mandi prices by commodity and state",
+                        "Arrival trends and supply situation",
+                        "State-wise production and yield data",
+                        "Historical price comparisons and trends"
+                    ]
+                },
+                {
+                    "title": "SEBI Guidelines for Commodity Derivatives",
+                    "category": "Regulation",
+                    "level": "Intermediate",
+                    "reading_time": "18 min",
+                    "url": "https://www.sebi.gov.in/legal/regulations/jul-2023/securities-and-exchange-board-of-india-stock-brokers-regulations-1992_73823.html",
+                    "summary": "Understanding regulatory framework for commodity derivatives trading in India.",
+                    "key_points": [
+                        "Eligibility criteria for trading",
+                        "Position limits and reporting requirements",
+                        "Margin and risk management norms",
+                        "Compliance and disclosure requirements"
                     ]
                 },
                 {
@@ -1345,15 +1647,29 @@ else:
                     "url": "https://www.investopedia.com/options-basics-tutorial-4583012",
                     "summary": "Use options for hedging and generating income from commodity positions.",
                     "key_points": [
-                        "Call and put fundamentals",
-                        "Protective puts for downside",
-                        "Covered calls for income",
-                        "Collar strategies"
+                        "Call and put options fundamentals",
+                        "Protective puts for downside protection",
+                        "Covered calls for income generation",
+                        "Collar and spread strategies"
+                    ]
+                },
+                {
+                    "title": "Climate Change and Agricultural Commodity Prices",
+                    "category": "Market Analysis",
+                    "level": "Intermediate",
+                    "reading_time": "16 min",
+                    "url": "https://www.fao.org/climate-change/en/",
+                    "summary": "Impact of climate change on agricultural production and commodity price volatility.",
+                    "key_points": [
+                        "Weather pattern changes and crop yields",
+                        "Long-term price trends and volatility",
+                        "Adaptation strategies for farmers",
+                        "Insurance and risk mitigation tools"
                     ]
                 }
             ]
             article_category = st.selectbox("Filter by Category", 
-                ['All', 'Comprehensive Guide', 'Trading Basics', 'Risk Management', 'Strategy', 'Market Analysis', 'Market Data', 'Advanced Strategy'],
+                ['All', 'Comprehensive Guide', 'Trading Basics', 'Risk Management', 'Strategy', 'Market Analysis', 'Market Data', 'Advanced Strategy', 'Regulation'],
                 key="article_filter")
             filtered_articles = [a for a in articles if article_category == 'All' or a['category'] == article_category]
             for idx, article in enumerate(filtered_articles):
