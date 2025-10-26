@@ -29,6 +29,8 @@ if 'alerts' not in st.session_state:
     ]
 if 'notifications' not in st.session_state:
     st.session_state.notifications = []
+if 'module_progress' not in st.session_state:
+    st.session_state.module_progress = {}
 if 'price_data' not in st.session_state:
     dates = pd.date_range(end=datetime.now(), periods=180, freq='D')
     base_price = 6000
