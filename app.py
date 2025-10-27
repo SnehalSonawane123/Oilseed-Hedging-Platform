@@ -976,7 +976,7 @@ else:
                     'duration': '15 mins',
                     'level': 'Beginner',
                     'completed': False,
-                    'video': 'https://www.youtube.com/watch?v=ybuEF3Wf96E',
+                    'video':'https://www.youtube.com/watch?v=QZD2pFfTN0k',
                     'content': {
                         'overview': 'Hedging is a risk management strategy used to offset potential losses in investments by taking opposite positions in related assets.',
                         'key_concepts': [
@@ -1006,7 +1006,7 @@ else:
                     'duration': '25 mins',
                     'level': 'Intermediate',
                     'completed': False,
-                    'video': 'https://www.youtube.com/watch?v=VmdEKvB0OUs',
+                    'video': 'https://www.youtube.com/watch?v=Jq3E8JqZdBw',
                     'content': {
                         'overview': 'Futures contracts are standardized agreements to buy or sell a commodity at a predetermined price on a specific future date.',
                         'key_concepts': [
@@ -1037,7 +1037,7 @@ else:
                     'duration': '20 mins',
                     'level': 'Intermediate',
                     'completed': False,
-                    'video': 'https://www.youtube.com/watch?v=vXK_tZwFPKY',
+                    'video': 'https://www.youtube.com/watch?v=Hp8SMDbIVGk',
                     'content': {
                         'overview': 'Forward contracts are customized agreements between two parties to buy or sell a commodity at a specific price on a future date.',
                         'key_concepts': [
@@ -1072,7 +1072,7 @@ else:
                     'duration': '30 mins',
                     'level': 'Advanced',
                     'completed': False,
-                    'video': 'https://www.youtube.com/watch?v=7Ku4aNbLhf4',
+                    'video': 'https://www.youtube.com/watch?v=7FXulMLCbF4',
                     'content': {
                         'overview': 'Comprehensive risk management involves identifying, measuring, and mitigating various types of risks in commodity trading.',
                         'risk_types': [
@@ -1113,7 +1113,7 @@ else:
                     'duration': '20 mins',
                     'level': 'Beginner',
                     'completed': False,
-                    'video': 'https://www.youtube.com/watch?v=HKbr7B8ydcE',
+                    'video': 'https://www.youtube.com/watch?v=Jq3E8JqZdBw',
                     'content': {
                         'overview': 'National Commodity & Derivatives Exchange (NCDEX) is India\'s premier commodity exchange for agricultural commodities.',
                         'key_concepts': [
@@ -1241,12 +1241,12 @@ else:
             st.subheader("📺 Video Tutorial Library")
             st.markdown("**Educational videos on commodity trading and hedging strategies**")
             videos = [
-                {"title": "Introduction to Commodity Hedging", "duration": "15:30", "level": "Beginner", "link": "https://www.youtube.com/watch?v=ybuEF3Wf96E", "description": "Learn how hedging protects farmers from price volatility", "topics": ["Price risk", "Hedge basics", "Farmer benefits"]},
-                {"title": "NCDEX Platform Complete Guide", "duration": "22:45", "level": "Beginner", "link": "https://www.youtube.com/watch?v=HKbr7B8ydcE", "description": "Step-by-step guide to trading on NCDEX exchange", "topics": ["Account opening", "Order placement", "Margin system"]},
-                {"title": "Futures vs Forward Contracts", "duration": "18:20", "level": "Intermediate", "link": "https://www.youtube.com/watch?v=vXK_tZwFPKY", "description": "Understanding the differences and when to use each", "topics": ["Standardization", "Risk comparison", "Liquidity"]},
-                {"title": "Technical Analysis for Commodities", "duration": "28:40", "level": "Intermediate", "link": "https://www.youtube.com/watch?v=VmdEKvB0OUs", "description": "Chart patterns and indicators for commodity trading", "topics": ["Moving averages", "RSI", "Support/Resistance"]},
-                {"title": "Advanced Hedging Strategies", "duration": "35:15", "level": "Advanced", "link": "https://www.youtube.com/watch?v=7Ku4aNbLhf4", "description": "Complex strategies for portfolio hedging", "topics": ["Delta hedging", "Spread strategies", "Ratio hedging"]},
-                {"title": "Risk Management Masterclass", "duration": "42:10", "level": "Advanced", "link": "https://www.youtube.com/watch?v=MXKPOGkUyxI", "description": "Comprehensive risk assessment and mitigation", "topics": ["VaR calculation", "Portfolio optimization", "Stress testing"]}
+                {"title": "Introduction to Commodity Hedging", "duration": "15:30", "level": "Beginner", "link": "https://www.youtube.com/watch?v=QZD2pFfTN0k", "description": "Learn how hedging protects farmers from price volatility", "topics": ["Price risk", "Hedge basics", "Farmer benefits"]},
+                {"title": "NCDEX Platform Complete Guide", "duration": "22:45", "level": "Beginner", "link": "https://www.youtube.com/watch?v=Jq3E8JqZdBw", "description": "Step-by-step guide to trading on NCDEX exchange", "topics": ["Account opening", "Order placement", "Margin system"]},
+                {"title": "Futures vs Forward Contracts", "duration": "18:20", "level": "Intermediate", "link": "https://www.youtube.com/watch?v=Hp8SMDbIVGk", "description": "Understanding the differences and when to use each", "topics": ["Standardization", "Risk comparison", "Liquidity"]},
+                {"title": "Technical Analysis for Commodities", "duration": "28:40", "level": "Intermediate", "link": "https://www.youtube.com/watch?v=8fzKrcQUcVo", "description": "Chart patterns and indicators for commodity trading", "topics": ["Moving averages", "RSI", "Support/Resistance"]},
+                {"title": "Advanced Hedging Strategies", "duration": "35:15", "level": "Advanced", "link": "https://www.youtube.com/watch?v=7FXulMLCbF4", "description": "Complex strategies for portfolio hedging", "topics": ["Delta hedging", "Spread strategies", "Ratio hedging"]},
+                {"title": "Risk Management in Trading", "duration": "42:10", "level": "Advanced", "link": "https://www.youtube.com/watch?v=yM9VgCqqGBw", "description": "Comprehensive risk assessment and mitigation", "topics": ["VaR calculation", "Portfolio optimization", "Stress testing"]}
             ]
             video_level = st.selectbox("Filter by Level", ['All', 'Beginner', 'Intermediate', 'Advanced'], key="video_filter")
             filtered_videos = [v for v in videos if video_level == 'All' or v['level'] == video_level]
@@ -1503,35 +1503,35 @@ else:
             st.subheader("📄 Expert Articles & Guides")
             articles = [
                 {
-                    "title": "Complete Guide to Oilseed Hedging in India",
+                    "title": "Complete Guide to Commodity Hedging",
                     "category": "Comprehensive Guide",
                     "level": "All Levels",
                     "reading_time": "12 min",
-                    "url": "https://www.commoditiescontrol.com/eagritrader/commodityknowledge/futurstrading/hedging.htm",
-                    "summary": "Everything you need to know about hedging oilseeds including soybean, mustard, and groundnut in Indian markets.",
+                    "url": "https://www.investopedia.com/terms/h/hedge.asp",
+                    "summary": "Everything you need to know about hedging including strategies, benefits, and risk management.",
                     "key_points": [
-                        "Understanding Indian oilseed markets and seasonal patterns",
-                        "Step-by-step hedging strategies for different crops",
-                        "NCDEX contract specifications and trading hours",
-                        "Real case studies from successful farmers"
+                        "Understanding hedging fundamentals and objectives",
+                        "Different hedging strategies for various scenarios",
+                        "Practical examples from commodity markets",
+                        "When to hedge and when not to hedge"
                     ]
                 },
                 {
-                    "title": "Understanding Futures Trading on NCDEX",
+                    "title": "Understanding Futures Contracts",
                     "category": "Trading Basics",
                     "level": "Beginner",
                     "reading_time": "10 min",
-                    "url": "https://www.ncdex.com/market-pulse/knowledge-centre",
-                    "summary": "Official NCDEX guide to futures trading covering contracts, margins, and settlement procedures.",
+                    "url": "https://www.investopedia.com/terms/f/futurescontract.asp",
+                    "summary": "Complete guide to futures contracts covering mechanics, margins, and settlement procedures.",
                     "key_points": [
-                        "Contract specifications for agricultural commodities",
-                        "Margin requirements and mark-to-market process",
-                        "Trading hours and settlement procedures",
-                        "Delivery and quality standards"
+                        "What are futures contracts and how they work",
+                        "Margin requirements and mark-to-market",
+                        "Contract specifications and expiry dates",
+                        "Physical delivery vs cash settlement"
                     ]
                 },
                 {
-                    "title": "Managing Basis Risk in Agricultural Commodities",
+                    "title": "Managing Basis Risk in Hedging",
                     "category": "Risk Management",
                     "level": "Intermediate",
                     "reading_time": "8 min",
@@ -1539,32 +1539,32 @@ else:
                     "summary": "Learn how to minimize basis risk when hedging agricultural commodities.",
                     "key_points": [
                         "What causes basis to widen or narrow",
-                        "Historical basis patterns in Indian markets",
+                        "Historical basis patterns in markets",
                         "Strategies to reduce basis risk exposure",
                         "Choosing the right delivery month"
                     ]
                 },
                 {
-                    "title": "Forward Contracts vs Futures: Making the Right Choice",
+                    "title": "Forward Contracts Explained",
                     "category": "Strategy",
                     "level": "Beginner",
                     "reading_time": "6 min",
-                    "url": "https://www.investopedia.com/ask/answers/difference-between-forward-and-futures-contracts/",
-                    "summary": "Compare forward and futures contracts to determine which hedging tool is right for your needs.",
+                    "url": "https://www.investopedia.com/terms/f/forwardcontract.asp",
+                    "summary": "Understanding forward contracts and their role in commodity hedging.",
                     "key_points": [
-                        "Key differences in flexibility and standardization",
-                        "Credit risk vs market risk considerations",
-                        "Liquidity and transaction costs comparison",
-                        "When to use each instrument effectively"
+                        "Key differences between forwards and futures",
+                        "Customization benefits and counterparty risk",
+                        "When to use forward contracts",
+                        "Legal and enforcement considerations"
                     ]
                 },
                 {
-                    "title": "Commodity Trading Strategies for Indian Farmers",
+                    "title": "Commodity Trading Strategies",
                     "category": "Trading Basics",
                     "level": "Beginner",
                     "reading_time": "15 min",
-                    "url": "https://economictimes.indiatimes.com/markets/commodities",
-                    "summary": "Essential trading strategies and risk management tips for new commodity traders.",
+                    "url": "https://www.investopedia.com/articles/trading/07/commodity_strategies.asp",
+                    "summary": "Essential trading strategies and risk management tips for commodity traders.",
                     "key_points": [
                         "Understanding market fundamentals and price drivers",
                         "Position sizing and risk management rules",
@@ -1573,81 +1573,11 @@ else:
                     ]
                 },
                 {
-                    "title": "Seasonal Patterns in Oilseed Prices",
-                    "category": "Market Analysis",
-                    "level": "Intermediate",
-                    "reading_time": "10 min",
-                    "url": "https://agmarknet.gov.in/",
-                    "summary": "Understand seasonal price movements to time your hedging decisions better.",
-                    "key_points": [
-                        "Harvest season impact on oilseed prices",
-                        "Festival demand spikes and price volatility",
-                        "Import policy effects on domestic markets",
-                        "Weather patterns and production forecasts"
-                    ]
-                },
-                {
-                    "title": "Technical Analysis in Commodity Markets",
-                    "category": "Market Analysis",
-                    "level": "Intermediate",
-                    "reading_time": "12 min",
-                    "url": "https://www.investopedia.com/articles/trading/09/commodity-technical-analysis.asp",
-                    "summary": "Learn to use charts and indicators for better trading decisions in commodity markets.",
-                    "key_points": [
-                        "Key chart patterns specific to commodities",
-                        "Moving averages and trend identification",
-                        "Support and resistance levels",
-                        "Volume analysis and price confirmation"
-                    ]
-                },
-                {
-                    "title": "Risk Management in Agricultural Futures",
-                    "category": "Risk Management",
-                    "level": "Advanced",
-                    "reading_time": "14 min",
-                    "url": "https://www.cmegroup.com/education/courses/introduction-to-futures/understanding-risk-management.html",
-                    "summary": "Comprehensive guide to managing risks in agricultural commodity trading.",
-                    "key_points": [
-                        "Value at Risk (VaR) calculation methods",
-                        "Portfolio diversification strategies",
-                        "Stop-loss and take-profit strategies",
-                        "Stress testing and scenario analysis"
-                    ]
-                },
-                {
-                    "title": "Indian Agricultural Market Live Data",
-                    "category": "Market Data",
-                    "level": "All Levels",
-                    "reading_time": "Live",
-                    "url": "https://agmarknet.gov.in/PriceAndArrivals/CommodityWise.aspx",
-                    "summary": "Real-time market prices and arrivals data from agricultural markets across India.",
-                    "key_points": [
-                        "Daily mandi prices by commodity and state",
-                        "Arrival trends and supply situation",
-                        "State-wise production and yield data",
-                        "Historical price comparisons and trends"
-                    ]
-                },
-                {
-                    "title": "SEBI Guidelines for Commodity Derivatives",
-                    "category": "Regulation",
-                    "level": "Intermediate",
-                    "reading_time": "18 min",
-                    "url": "https://www.sebi.gov.in/legal/regulations/jul-2023/securities-and-exchange-board-of-india-stock-brokers-regulations-1992_73823.html",
-                    "summary": "Understanding regulatory framework for commodity derivatives trading in India.",
-                    "key_points": [
-                        "Eligibility criteria for trading",
-                        "Position limits and reporting requirements",
-                        "Margin and risk management norms",
-                        "Compliance and disclosure requirements"
-                    ]
-                },
-                {
                     "title": "Options Trading in Commodities",
                     "category": "Advanced Strategy",
                     "level": "Advanced",
                     "reading_time": "18 min",
-                    "url": "https://www.investopedia.com/options-basics-tutorial-4583012",
+                    "url": "https://www.investopedia.com/terms/c/commodityoption.asp",
                     "summary": "Use options for hedging and generating income from commodity positions.",
                     "key_points": [
                         "Call and put options fundamentals",
@@ -1657,17 +1587,87 @@ else:
                     ]
                 },
                 {
-                    "title": "Climate Change and Agricultural Commodity Prices",
+                    "title": "Technical Analysis for Commodities",
                     "category": "Market Analysis",
                     "level": "Intermediate",
-                    "reading_time": "16 min",
-                    "url": "https://www.fao.org/climate-change/en/",
-                    "summary": "Impact of climate change on agricultural production and commodity price volatility.",
+                    "reading_time": "12 min",
+                    "url": "https://www.investopedia.com/articles/active-trading/040915/guide-commodity-trading.asp",
+                    "summary": "Learn to use charts and indicators for better trading decisions in commodity markets.",
                     "key_points": [
-                        "Weather pattern changes and crop yields",
-                        "Long-term price trends and volatility",
-                        "Adaptation strategies for farmers",
-                        "Insurance and risk mitigation tools"
+                        "Key chart patterns specific to commodities",
+                        "Moving averages and trend identification",
+                        "Support and resistance levels",
+                        "Volume analysis and price confirmation"
+                    ]
+                },
+                {
+                    "title": "Understanding Margin Requirements",
+                    "category": "Risk Management",
+                    "level": "Intermediate",
+                    "reading_time": "8 min",
+                    "url": "https://www.investopedia.com/terms/m/margin.asp",
+                    "summary": "Everything about margin requirements, maintenance margins, and margin calls.",
+                    "key_points": [
+                        "Initial margin vs maintenance margin",
+                        "How mark-to-market works",
+                        "Understanding margin calls",
+                        "Managing margin effectively"
+                    ]
+                },
+                {
+                    "title": "Indian Agricultural Markets Overview",
+                    "category": "Market Data",
+                    "level": "All Levels",
+                    "reading_time": "Live",
+                    "url": "https://agmarknet.gov.in/",
+                    "summary": "Official government portal for agricultural market prices across India.",
+                    "key_points": [
+                        "Daily mandi prices by commodity and state",
+                        "Arrival trends and supply situation",
+                        "State-wise production data",
+                        "Historical price comparisons"
+                    ]
+                },
+                {
+                    "title": "NCDEX - National Commodity Exchange",
+                    "category": "Trading Basics",
+                    "level": "Beginner",
+                    "reading_time": "10 min",
+                    "url": "https://www.ncdex.com/",
+                    "summary": "Official NCDEX website with trading information and market data.",
+                    "key_points": [
+                        "Exchange overview and regulations",
+                        "Contract specifications for all commodities",
+                        "Trading hours and settlement process",
+                        "Delivery centers and quality standards"
+                    ]
+                },
+                {
+                    "title": "Value at Risk (VaR) Explained",
+                    "category": "Risk Management",
+                    "level": "Advanced",
+                    "reading_time": "14 min",
+                    "url": "https://www.investopedia.com/terms/v/var.asp",
+                    "summary": "Comprehensive guide to understanding and calculating Value at Risk.",
+                    "key_points": [
+                        "What is VaR and why it matters",
+                        "Different methods to calculate VaR",
+                        "Interpreting VaR results",
+                        "Limitations of VaR models"
+                    ]
+                },
+                {
+                    "title": "Spread Trading Strategies",
+                    "category": "Advanced Strategy",
+                    "level": "Advanced",
+                    "reading_time": "16 min",
+                    "url": "https://www.investopedia.com/terms/s/spread.asp",
+                    "summary": "Advanced techniques for profiting from price differentials in commodity markets.",
+                    "key_points": [
+                        "Calendar spreads and inter-commodity spreads",
+                        "Understanding spread relationships",
+                        "Entry and exit strategies",
+                        "Risk management in spread trading"
                     ]
                 }
             ]
