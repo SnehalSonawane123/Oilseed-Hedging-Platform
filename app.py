@@ -301,7 +301,6 @@ else:
             "📋 Forward Contracts",
             "💼 My Portfolio",
             "🔗 Blockchain Ledger",
-            "📚 Learning Hub",
             "📊 Analytics",
             "⚙️ Settings"
         ])
