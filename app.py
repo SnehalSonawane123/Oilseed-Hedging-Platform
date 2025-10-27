@@ -1444,9 +1444,10 @@ else:
             selected_quiz = st.selectbox("Choose Quiz Topic", list(quiz_topics.keys()))
             quiz_data = quiz_topics[selected_quiz]
             st.info(f"📊 Level: {quiz_data['level']} | Questions: {len(quiz_data['questions'])}")
-            if f'quiz_{selected_quiz}' not in st.session_state.module_progress:
-                st.session_state.module_progress[f'quiz_{selected_quiz}'] = {'started': False, 'answers': {}, 'submitted': False}
-            quiz_state = st.session_state.module_progress[f'quiz_{selected_quiz}']
+            quiz_key = f'quiz_{selected_quiz}'
+            if quiz_key not in st.session_state:
+                st.session_state[quiz_key] = {'started': False, 'answers': {}, 'submitted': False}
+            quiz_state = st.session_state[quiz_key]
             if not quiz_state['started']:
                 if st.button("🚀 Start Quiz", use_container_width=True, type="primary"):
                     quiz_state['started'] = True
