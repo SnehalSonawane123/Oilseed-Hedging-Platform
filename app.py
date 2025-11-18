@@ -477,7 +477,7 @@ else:
         with col3:
             confidence_level = st.selectbox(t("Confidence Level", lang), ["68%", "95%", "99%"])
             if st.button(t("🚀 Generate Forecast", lang), use_container_width=True):
-            with st.spinner(t("🤖 AI analyzing market patterns...", lang)):
+                with st.spinner(t("🤖 AI analyzing market patterns...", lang)):
                 predictions = predict_prices(forecast_days, forecast_commodity_en)
                 historical = st.session_state.price_data[st.session_state.price_data['commodity'] == forecast_commodity_en].copy()
                 fig = go.Figure()
