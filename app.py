@@ -224,7 +224,16 @@ def export_transaction_history(username):
     } for b in user_blocks])
     return df
 lang = st.session_state.language
-st.title(t("🌾 GrainShield Pro - Oilseed Hedging Platform", lang))
+def tc(commodity):
+    if lang == 'en': return commodity
+    translations = {
+        'Soybean': {'hi': 'सोयाबीन', 'mr': 'सोयाबीन', 'gu': 'સોયાબીન', 'pa': 'ਸੋਇਆਬੀਨ', 'te': 'సోయాబీన్', 'kn': 'ಸೋಯಾಬೀನ್', 'ta': 'சோயாபீன்'},
+        'Mustard': {'hi': 'सरसों', 'mr': 'मोहरी', 'gu': 'સરસવ', 'pa': 'ਸਰ੍ਹੋਂ', 'te': 'ఆవాలు', 'kn': 'ಸಾಸಿವೆ', 'ta': 'கடுகு'},
+        'Groundnut': {'hi': 'मूंगफली', 'mr': 'भुईमूग', 'gu': 'મગફળી', 'pa': 'ਮੂੰਗਫਲੀ', 'te': 'వేరుశెనగ', 'kn': 'ಕಡಲೆಕಾಯಿ', 'ta': 'நிலக்கடலை'},
+        'Sunflower': {'hi': 'सूरजमुखी', 'mr': 'सूर्यफूल', 'gu': 'સૂર્યમુખી', 'pa': 'ਸੂਰਜਮੁਖੀ', 'te': 'సూర్యకాంతి', 'kn': 'ಸೂರ್ಯಕಾಂತಿ', 'ta': 'சூரியகாந்தி'}
+    }
+    return translations.get(commodity, {}).get(lang, commodity)
+st.title("🌾 " + t("GrainShield Pro - Oilseed Hedging Platform", lang))
 st.caption(t("AI-Powered Risk Management & Blockchain-Secured Trading", lang))
 if not st.session_state.logged_in:
     col1, col2, col3 = st.columns([1,2,1])
@@ -367,7 +376,7 @@ else:
             with cols[idx]:
                 delta_color = "normal" if data['change'] >= 0 else "inverse"
                 st.metric(
-                    commodity,
+                    tc(commodity),
                     f"₹{data['price']:,.0f}",
                     f"{data['change']:+.1f}%",
                     delta_color=delta_color
