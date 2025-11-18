@@ -293,10 +293,12 @@ if not st.session_state.logged_in:
                     st.success("✅ Registration successful! Please login.")
 else:
     with st.sidebar:
+        st.markdown("### 🌐 Language / भाषा")
         languages = {"English": "en", "हिंदी": "hi", "मराठी": "mr", "ગુજરાતી": "gu"}
-        selected_lang = st.sidebar.selectbox("🌐 Language", list(languages.keys()))
+        selected_lang = st.selectbox("Select Language", list(languages.keys()), key="lang_selector")
         lang = languages[selected_lang]
         st.session_state.language = lang
+        st.divider()
         
         st.image("https://cdn-icons-png.flaticon.com/512/2917/2917995.png", width=80)
         st.title(f"👤 {st.session_state.username}")
