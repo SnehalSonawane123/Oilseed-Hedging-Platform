@@ -8,16 +8,16 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
 import hashlib
 import json
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 import kagglehub
 from kagglehub import KaggleDatasetAdapter
-translator = Translator()
-st.set_page_config(page_title="GrainShield Pro - Oilseed Hedging Platform", page_icon="🌾", layout="wide")
+@st.cache_data
 def t(text, lang):
-    if lang == 'en':
+    if lang == 'en' or not text:
         return text
     try:
-        return translator.translate(text, dest=lang).text
+        translator = GoogleTranslator(source='en', target=lang)
+        return translator.translate(text)
     except:
         return text
 if 'language' not in st.session_state:
