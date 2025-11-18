@@ -224,16 +224,6 @@ def export_transaction_history(username):
     } for b in user_blocks])
     return df
 lang = st.session_state.language
-def translate_commodity(commodity_name, target_lang):
-    if target_lang == 'en':
-        return commodity_name
-    commodity_translations = {
-        'Soybean': {'hi': 'सोयाबीन', 'mr': 'सोयाबीन', 'gu': 'સોયાબીન', 'pa': 'ਸੋਇਆਬੀਨ', 'te': 'సోయాబీన్', 'kn': 'ಸೋಯಾಬೀನ್', 'ta': 'சோயாபீன்'},
-        'Mustard': {'hi': 'सरसों', 'mr': 'मोहरी', 'gu': 'સરસવ', 'pa': 'ਸਰ੍ਹੋਂ', 'te': 'ఆవాలు', 'kn': 'ಸಾಸಿವೆ', 'ta': 'கடுகு'},
-        'Groundnut': {'hi': 'मूंगफली', 'mr': 'भुईमूग', 'gu': 'મગફળી', 'pa': 'ਮੂੰਗਫਲੀ', 'te': 'వేరుశెనగ', 'kn': 'ಕಡಲೆಕಾಯಿ', 'ta': 'நிலக்கடலை'},
-        'Sunflower': {'hi': 'सूरजमुखी', 'mr': 'सूर्यफूल', 'gu': 'સૂર્યમુખી', 'pa': 'ਸੂਰਜਮੁਖੀ', 'te': 'సూర్యకాంతి', 'kn': 'ಸೂರ್ಯಕಾಂತಿ', 'ta': 'சூரியகாந்தி'}
-    }
-    return commodity_translations.get(commodity_name, {}).get(target_lang, commodity_name)
 st.title(t("🌾 GrainShield Pro - Oilseed Hedging Platform", lang))
 st.caption(t("AI-Powered Risk Management & Blockchain-Secured Trading", lang))
 if not st.session_state.logged_in:
@@ -377,7 +367,7 @@ else:
             with cols[idx]:
                 delta_color = "normal" if data['change'] >= 0 else "inverse"
                 st.metric(
-                    translate_commodity(commodity, lang),
+                    commodity,
                     f"₹{data['price']:,.0f}",
                     f"{data['change']:+.1f}%",
                     delta_color=delta_color
@@ -386,12 +376,11 @@ else:
         col1, col2 = st.columns([2, 1])
         with col1:
             st.subheader(t("📈 Historical Price Trend", lang))
-            commodity_filter = st.selectbox(t("Select Commodity", lang), [t('All', lang)] + [translate_commodity(c, lang) for c in st.session_state.market_data.keys()], key="dash_commodity")
-            if t('All', lang) in commodity_filter:
+            commodity_filter = st.selectbox(t("Select Commodity", lang), ['All'] + list(st.session_state.market_data.keys()), key="dash_commodity")
+            if commodity_filter == 'All':
                 plot_data = st.session_state.price_data
             else:
-                original_commodity = [k for k, v in {k: translate_commodity(k, lang) for k in st.session_state.market_data.keys()}.items() if v == commodity_filter][0]
-                plot_data = st.session_state.price_data[st.session_state.price_data['commodity'] == original_commodity]
+                plot_data = st.session_state.price_data[st.session_state.price_data['commodity'] == commodity_filter]
             fig = go.Figure()
             fig.add_trace(go.Scatter(
                 x=plot_data['date'],
@@ -470,16 +459,15 @@ else:
         st.header(t("🔮 AI-Powered Price Forecasting", lang))
         col1, col2, col3 = st.columns(3)
         with col1:
-            forecast_commodity = st.selectbox(t("Select Commodity", lang), [translate_commodity(c, lang) for c in st.session_state.market_data.keys()])
-            forecast_commodity_en = [k for k, v in {k: translate_commodity(k, lang) for k in st.session_state.market_data.keys()}.items() if v == forecast_commodity][0]
+            forecast_commodity = st.selectbox(t("Select Commodity", lang), list(st.session_state.market_data.keys()))
         with col2:
             forecast_days = st.slider(t("Forecast Period (days)", lang), 7, 90, 30)
         with col3:
             confidence_level = st.selectbox(t("Confidence Level", lang), ["68%", "95%", "99%"])
         if st.button(t("🚀 Generate Forecast", lang), use_container_width=True):
             with st.spinner(t("🤖 AI analyzing market patterns...", lang)):
-                predictions = predict_prices(forecast_days, forecast_commodity_en)
-                historical = st.session_state.price_data[st.session_state.price_data['commodity'] == forecast_commodity_en].copy()
+                predictions = predict_prices(forecast_days, forecast_commodity)
+                historical = st.session_state.price_data[st.session_state.price_data['commodity'] == forecast_commodity].copy()
                 fig = go.Figure()
                 fig.add_trace(go.Scatter(
                     x=historical['date'],
@@ -552,11 +540,10 @@ else:
             col1, col2 = st.columns(2)
             with col1:
                 position_type = st.selectbox(t("Position Type", lang), [t("Long (Buy)", lang), t("Short (Sell)", lang)])
-                commodity = st.selectbox(t("Commodity", lang), [translate_commodity(c, lang) for c in st.session_state.market_data.keys()])
-                commodity_en = [k for k, v in {k: translate_commodity(k, lang) for k in st.session_state.market_data.keys()}.items() if v == commodity][0]
+                commodity = st.selectbox(t("Commodity", lang), list(st.session_state.market_data.keys()))
                 quantity = st.number_input(t("Quantity (quintals)", lang), min_value=1, max_value=10000, value=10)
             with col2:
-                current_market_price = st.session_state.market_data[commodity_en]['price']
+                current_market_price = st.session_state.market_data[commodity]['price']
                 entry_price = st.number_input(t("Entry Price (₹/quintal)", lang), value=float(current_market_price), min_value=1000.0)
                 expiry_date = st.date_input(t("Expiry Date", lang), min_value=datetime.now().date() + timedelta(days=1), value=datetime.now().date() + timedelta(days=30))
                 leverage = st.selectbox(t("Leverage", lang), ["1x", "2x", "3x", "5x"])
@@ -602,8 +589,7 @@ else:
             st.subheader(t("🧮 Position Calculator & Risk Assessment", lang))
             calc_col1, calc_col2 = st.columns(2)
             with calc_col1:
-                calc_commodity = st.selectbox(t("Commodity", lang), [translate_commodity(c, lang) for c in st.session_state.market_data.keys()], key="fc_commodity")
-                commodity_en = [k for k, v in {k: translate_commodity(k, lang) for k in st.session_state.market_data.keys()}.items() if v == commodity][0]
+                calc_commodity = st.selectbox(t("Commodity", lang), list(st.session_state.market_data.keys()), key="calc_commodity")
                 calc_quantity = st.number_input(t("Quantity (quintals)", lang), min_value=1, value=10, key="calc_qty")
                 calc_entry = st.number_input(t("Entry Price (₹/quintal)", lang), value=float(st.session_state.market_data[calc_commodity]['price']), key="calc_entry")
             with calc_col2:
@@ -704,7 +690,7 @@ else:
                     'id': len(st.session_state.contracts) + 1,
                     'creator': st.session_state.username,
                     'type': contract_type,
-                    'commodity': commodity_en,
+                    'commodity': commodity,
                     'quantity': quantity,
                     'quality_grade': quality_grade,
                     'price': contract_price,
