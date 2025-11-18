@@ -293,7 +293,16 @@ if not st.session_state.logged_in:
 else:
     with st.sidebar:
         st.markdown("### 🌐 Language")
-        languages = {"English 🇬🇧": "en", "हिंदी 🇮🇳": "hi", "मराठी 🇮🇳": "mr", "ગુજરાતી 🇮🇳": "gu"}
+        languages = {
+            "English 🇬🇧": "en",
+            "हिंदी 🇮🇳": "hi",
+            "मराठी 🇮🇳": "mr",
+            "ગુજરાતી 🇮🇳": "gu",
+            "ਪੰਜਾਬੀ 🇮🇳": "pa",
+            "తెలుగు 🇮🇳": "te",
+            "ಕನ್ನಡ 🇮🇳": "kn",
+            "தமிழ் 🇮🇳": "ta"
+        }
         current_lang_display = [k for k, v in languages.items() if v == st.session_state.language][0] if st.session_state.language in languages.values() else "English 🇬🇧"
         selected_lang = st.selectbox("", list(languages.keys()), index=list(languages.keys()).index(current_lang_display), label_visibility="collapsed")
         st.session_state.language = languages[selected_lang]
