@@ -419,10 +419,11 @@ else:
         with col2:
             st.subheader(t("📊 Volume Distribution", lang))
             volume_by_commodity = st.session_state.price_data.groupby('commodity')['volume'].sum().reset_index()
+            volume_by_commodity['commodity_translated'] = volume_by_commodity['commodity'].apply(lambda x: tc(x))
             fig_pie = px.pie(
                 volume_by_commodity,
                 values='volume',
-                names='commodity',
+                names='commodity_translated',  # Use translated names
                 title=t('Trading Volume by Commodity', lang)
             )
             fig_pie.update_layout(height=400)
