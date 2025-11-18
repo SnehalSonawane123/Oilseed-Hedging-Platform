@@ -225,16 +225,16 @@ def export_transaction_history(username):
     return df
 lang = st.session_state.language
 def tc(commodity):
-    if lang == 'en': return commodity
+    current_lang = st.session_state.language  # Read current language dynamically
+    if current_lang == 'en': return commodity
     translations = {
         'Soybean': {'hi': 'सोयाबीन', 'mr': 'सोयाबीन', 'gu': 'સોયાબીન', 'pa': 'ਸੋਇਆਬੀਨ', 'te': 'సోయాబీన్', 'kn': 'ಸೋಯಾಬೀನ್', 'ta': 'சோயாபீன்'},
         'Mustard': {'hi': 'सरसों', 'mr': 'मोहरी', 'gu': 'સરસવ', 'pa': 'ਸਰ੍ਹੋਂ', 'te': 'ఆవాలు', 'kn': 'ಸಾಸಿವೆ', 'ta': 'கடுகு'},
         'Groundnut': {'hi': 'मूंगफली', 'mr': 'भुईमूग', 'gu': 'મગફળી', 'pa': 'ਮੂੰਗਫਲੀ', 'te': 'వేరుశెనగ', 'kn': 'ಕಡಲೆಕಾಯಿ', 'ta': 'நிலக்கடலை'},
         'Sunflower': {'hi': 'सूरजमुखी', 'mr': 'सूर्यफूल', 'gu': 'સૂર્યમુખી', 'pa': 'ਸੂਰਜਮੁਖੀ', 'te': 'సూర్యకాంతి', 'kn': 'ಸೂರ್ಯಕಾಂತಿ', 'ta': 'சூரியகாந்தி'}
     }
-    return translations.get(commodity, {}).get(lang, commodity)
-st.title("🌾 " + t("GrainShield Pro - Oilseed Hedging Platform", lang))
-st.caption(t("AI-Powered Risk Management & Blockchain-Secured Trading", lang))
+    return translations.get(commodity, {}).get(current_lang, commodity)
+
 if not st.session_state.logged_in:
     col1, col2, col3 = st.columns([1,2,1])
     with col2:
@@ -356,6 +356,8 @@ else:
             st.session_state.username = ""
             st.session_state.notifications = []
             st.rerun()
+    st.title("🌾 " + t("GrainShield Pro - Oilseed Hedging Platform", lang))
+    st.caption(t("AI-Powered Risk Management & Blockchain-Secured Trading", lang))
     if t("🏠 Dashboard", lang) in menu:
         st.header(t("📊 Market Dashboard", lang))
         if st.session_state.notifications:
