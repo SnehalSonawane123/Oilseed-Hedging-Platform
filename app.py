@@ -1,3 +1,5 @@
+pip install googletrans==4.0.0-rc1
+pip install kagglehub
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -8,7 +10,20 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
 import hashlib
 import json
+from googletrans import Translator
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
 st.set_page_config(page_title="GrainShield Pro - Oilseed Hedging Platform", page_icon="🌾", layout="wide")
+translator = Translator()
+def t(text, lang):
+    if lang == 'en':
+        return text
+    try:
+        return translator.translate(text, dest=lang).text
+    except:
+        return text
+if 'language' not in st.session_state:
+    st.session_state.language = 'en'
 if 'blockchain' not in st.session_state:
     st.session_state.blockchain = []
 if 'users' not in st.session_state:
@@ -31,6 +46,13 @@ if 'notifications' not in st.session_state:
     st.session_state.notifications = []
 if 'module_progress' not in st.session_state:
     st.session_state.module_progress = {}
+@st.cache_data
+def load_kaggle_data():
+    try:
+        df = kagglehub.load_dataset(KaggleDatasetAdapter.PANDAS, "santoshd3/crop-price-prediction", "")
+        return df
+    except:
+        return None
 if 'price_data' not in st.session_state:
     dates = pd.date_range(end=datetime.now(), periods=180, freq='D')
     base_price = 6000
@@ -203,8 +225,8 @@ def export_transaction_history(username):
         'Hash': b['hash'][:16]
     } for b in user_blocks])
     return df
-st.title("🌾 GrainShield Pro - Oilseed Hedging Platform")
-st.caption("AI-Powered Risk Management & Blockchain-Secured Trading")
+st.title(t("🌾 GrainShield Pro - Oilseed Hedging Platform", lang))
+st.caption(t("AI-Powered Risk Management & Blockchain-Secured Trading", lang))
 if not st.session_state.logged_in:
     col1, col2, col3 = st.columns([1,2,1])
     with col2:
@@ -271,6 +293,11 @@ if not st.session_state.logged_in:
                     st.success("✅ Registration successful! Please login.")
 else:
     with st.sidebar:
+        languages = {"English": "en", "हिंदी": "hi", "मराठी": "mr", "ગુજરાતી": "gu"}
+        selected_lang = st.sidebar.selectbox("🌐 Language", list(languages.keys()))
+        lang = languages[selected_lang]
+        st.session_state.language = lang
+        
         st.image("https://cdn-icons-png.flaticon.com/512/2917/2917995.png", width=80)
         st.title(f"👤 {st.session_state.username}")
         user_info = st.session_state.users[st.session_state.username]
